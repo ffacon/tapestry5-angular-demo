@@ -1,0 +1,9 @@
+<html ng-app="phonecat" lang="en" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+    <head>
+        <meta charset="utf-8" />
+        <title>Tapestry 5 Angular - ${pageTitle}</title>
+    </head>
+    <body ng-controller="PhoneListCtrl">
+		<t:body />
+	</body>
+</html>
