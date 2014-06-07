@@ -66,6 +66,12 @@ resources, i.e. build is platform dependent! -->
             <version>3.3.3</version>
 		</dependency>
 
+        <dependency>
+            <groupId>org.tynamo</groupId>
+            <artifactId>tapestry-resteasy</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
 
 	</dependencies>
 	
