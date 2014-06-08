@@ -14,6 +14,7 @@ import dev.openshift.tapestry.angular.AngularSymbolConstants;
 
 import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 import org.slf4j.Logger;
+import org.tynamo.resteasy.ResteasySymbols;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,
@@ -83,6 +84,9 @@ public class AppModule {
 		pConfiguration.add(SymbolConstants.MINIFICATION_ENABLED, false);
 		pConfiguration.add(SymbolConstants.HMAC_PASSPHRASE,
 				"a1TAzRnjBZRKubgwSRlpX");
+        pConfiguration.add(ResteasySymbols.MAPPING_PREFIX, "/api");
+
+
 	}
 
 	/**
@@ -111,10 +115,17 @@ public class AppModule {
 	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "classpath:dev/openshift/tapestry/angular/vendor");
 	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.0.1");
 	        configuration.add(AngularSymbolConstants.ANGULAR_PAGES_SUBPACKAGE, "a");
-	    }
+	 }
 	    
-	    public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
-	    {
+	 public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
+	 {
 	        configuration.add("tap-angular", "org/got5/tapestry5");
-	    }
+	 }
+
+     public static void contributeResteasyPackageManager(Configuration<String> configuration)
+     {
+        configuration.add("dev.openshift.tapestry.angular.ws");
+     }
+
+
 }
