@@ -72,6 +72,12 @@ resources, i.e. build is platform dependent! -->
             <version>0.3.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson-provider</artifactId>
+            <version>3.0.7.Final</version>
+        </dependency>
+
 
 	</dependencies>
 	
@@ -185,6 +191,10 @@ resources, i.e. build is platform dependent! -->
            <url>https://repository.apache.org/content/repositories/releases/</url>
        </repository>
 
+       <repository>
+           <id>JBoss repository</id>
+           <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+       </repository>
 
        <repository>
            <id>codehaus.snapshots</id>
@@ -192,9 +202,21 @@ resources, i.e. build is platform dependent! -->
        </repository>
 
        <repository>
-           <id>OpenQA_Release</id>
-           <name>OpenQA Release Repository</name>
-           <url>http://archiva.openqa.org/repository/releases/</url>
+           <id>codehaus.release</id>
+           <url>https://nexus.codehaus.org/content/repositories/releases/</url>
+       </repository>
+
+
+       <repository>
+           <id>MavenCentral</id>
+           <name>Maven repository</name>
+           <url>http://repo1.maven.org/maven2</url>
+           <releases>
+               <enabled>true</enabled>
+           </releases>
+           <snapshots>
+               <enabled>false</enabled>
+           </snapshots>
        </repository>
 
 		<repository>
