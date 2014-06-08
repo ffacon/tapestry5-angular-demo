@@ -78,6 +78,11 @@ resources, i.e. build is platform dependent! -->
             <version>3.0.7.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
 	</dependencies>
 	
