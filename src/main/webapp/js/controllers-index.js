@@ -3,7 +3,7 @@
 /* Controllers */
 
 function PhoneListCtrl($scope, $http) {
-  $http.get('./Step8:phones').success(function(data) {
+  $http.get('./Index:phones').success(function(data) {
     $scope.phones = data;
   });
 
@@ -14,7 +14,7 @@ function PhoneListCtrl($scope, $http) {
 
 
 function PhoneDetailCtrl($scope, $routeParams, $http) {
-  $http.get('./Step8:phoneDetails/' + $routeParams.phoneId ).success(function(data) {
+  $http.get('./Index:phoneDetails/' + $routeParams.phoneId ).success(function(data) {
     $scope.phone = data;
   });
 }
