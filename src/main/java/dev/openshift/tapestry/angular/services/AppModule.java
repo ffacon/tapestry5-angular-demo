@@ -35,6 +35,8 @@ public class AppModule {
 	public static void bind(final ServiceBinder pBinder) {
 		// This next line addresses an issue affecting GlassFish and JBoss - see http://blog.progs.be/?p=52
 		javassist.runtime.Desc.useContextClassLoader = true;
+        pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
+
 	}
 	
 	// Tell Tapestry how to handle JBoss 7's classpath URLs - JBoss uses a "virtual file system".
