@@ -1,5 +1,5 @@
 //
-// Copyright 2010 GOT5 (GO Tapestry 5)
+// Copyright 2014
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package dev.openshift.tapestry.angular.pages;
 import java.io.IOException;
 import java.io.InputStream;
 
+import dev.openshift.tapestry.angular.services.PhoneCatalog;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MarkupWriter;
@@ -42,12 +43,15 @@ import org.apache.tapestry5.services.Response;
 public class Index
 {
 	private final String path = "dev/openshift/tapestry/angular/pages/";
-	 
-	 @OnEvent(value="phones")
-	 StreamResponse onReturnStreamResponse() {
-		   final String fileName = path + "phones.json";
-	        return createStreamResponseFromFile(fileName);   
-	    }
+
+    @Inject
+    PhoneCatalog catalog;
+
+    @OnEvent(value="phones")
+    JSONArray onReturnStreamResponse() {
+        String phones= catalog.getPhonesAsString();
+        return new JSONArray(phones);
+    }
 	 
 	 @OnEvent(value="partial")
 	 StreamResponse onReturnPartials(String name) {
