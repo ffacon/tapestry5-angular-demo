@@ -1,21 +1,14 @@
 package dev.openshift.tapestry.angular.services;
 
 import java.io.*;
-import java.util.Iterator;
+import java.util.Hashtable;
 import java.util.List;
 
 
 import dev.openshift.tapestry.angular.data.Phone;
-import org.apache.tapestry5.internal.grid.CollectionGridDataSource;
-import org.apache.tapestry5.ioc.internal.util.CollectionFactory;
-import dev.openshift.tapestry.angular.data.Product;
+import dev.openshift.tapestry.angular.data.PhoneDetails;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.type.TypeReference;
 
 
@@ -26,9 +19,13 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
     private List<Phone> catalog;
 
-    private StringBuilder responseStrBuilder;
+    private Hashtable<String, PhoneDetails> hPhoneDetails;
 
-    private final String path = "dev/openshift/tapestry/angular/pages/";
+    private StringBuilder phonesStrBuilder;
+
+    private Hashtable<String, String> hPhoneDetailsJSON;
+
+    private final String path = "dev/openshift/tapestry/angular/pages/phones/";
 
     public PhoneCatalogImpl() {
 
@@ -40,16 +37,46 @@ public class PhoneCatalogImpl implements PhoneCatalog
             InputStream inputStream = classLoader.getResourceAsStream(filePath);
 
             BufferedReader streamReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            responseStrBuilder = new StringBuilder();
+            phonesStrBuilder = new StringBuilder();
 
             String inputStr;
             while ((inputStr = streamReader.readLine()) != null)
-                    responseStrBuilder.append(inputStr);
+                    phonesStrBuilder.append(inputStr);
 
             final ObjectMapper mapper = new ObjectMapper();
 
 
-            catalog = mapper.readValue(responseStrBuilder.toString(), new TypeReference<List<Phone>>() { });
+            catalog = mapper.readValue(phonesStrBuilder.toString(), new TypeReference<List<Phone>>() { });
+
+            hPhoneDetails = new Hashtable();
+            hPhoneDetailsJSON = new Hashtable();
+
+            for (Phone phone : catalog) {
+
+                String fileDetails = path + phone.getId() + ".json";
+                // read the json file
+                InputStream inputStreamDetails = classLoader.getResourceAsStream(fileDetails);
+
+                BufferedReader streamReaderDetails = new BufferedReader(new InputStreamReader(inputStreamDetails, "UTF-8"));
+                StringBuilder strBuilder = new StringBuilder();
+
+                String inputStr2;
+                while ((inputStr2 = streamReaderDetails.readLine()) != null)
+                    strBuilder.append(inputStr2);
+
+                ObjectMapper mapper2 = new ObjectMapper();
+
+
+                PhoneDetails details = mapper2.readValue(strBuilder.toString(), PhoneDetails.class);
+
+
+                hPhoneDetails.put(phone.getId(),details);
+                hPhoneDetailsJSON.put(phone.getId(),strBuilder.toString());
+
+
+
+
+            }
 
         }
 
@@ -69,7 +96,17 @@ public class PhoneCatalogImpl implements PhoneCatalog
 	}
 
     public String getPhonesAsString() {
-        return responseStrBuilder.toString();
+        return phonesStrBuilder.toString();
+    }
+
+
+    public PhoneDetails getPhonesDetails(String id) {
+        return hPhoneDetails.get(id);
+    }
+
+
+    public String getPhonesDetailsAsString(String id) {
+        return hPhoneDetailsJSON.get(id);
     }
 
 

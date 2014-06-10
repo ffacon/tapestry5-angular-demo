@@ -52,18 +52,22 @@ public class Index
         String phones= catalog.getPhonesAsString();
         return new JSONArray(phones);
     }
-	 
+
+    @OnEvent(value="phoneDetails")
+    JSONObject onReturnPhoneDetails(String name) {
+        String phonesDetails= catalog.getPhonesDetailsAsString(name);
+        return new JSONObject(phonesDetails);
+        //String fileName = path + "phones/"+name+".json";
+        //return createStreamResponseFromFile(fileName);
+    }
+
 	 @OnEvent(value="partial")
 	 StreamResponse onReturnPartials(String name) {
 	        final String fileName = path + "partials/"+name+".html";
 	        return createStreamResponseFromFile(fileName);
 	    }
 	
-	 @OnEvent(value="phoneDetails")
-	 StreamResponse onReturnPhoneDetails(String name) {
-	        String fileName = path + "phones/"+name+".json";
-	        return createStreamResponseFromFile(fileName);
-	    }
+
 	 
 	 private StreamResponse createStreamResponseFromFile(final String fileName){
            
