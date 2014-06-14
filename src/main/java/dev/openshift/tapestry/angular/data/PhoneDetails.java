@@ -1,6 +1,14 @@
 package dev.openshift.tapestry.angular.data;
 
 
+import org.apache.tapestry5.json.JSONArray;
+import org.apache.tapestry5.json.JSONObject;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
+
+import java.io.IOException;
+
 public class PhoneDetails {
     private String additionalFeatures;
     private Android android;
@@ -130,5 +138,50 @@ public class PhoneDetails {
 
     public void setStorage(Storage storage) {
         this.storage = storage;
+    }
+
+
+    public JSONObject getJSONObject() {
+        String json="";
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        JSONObject ret = new JSONObject();
+
+        ret.put("additionalFeatures",this.additionalFeatures);
+        ret.put("description",this.description);
+        ret.put("id",this.id);
+        ret.put("name",this.name);
+
+        try {
+            json = ow.writeValueAsString(this.android);
+            ret.put("android",new JSONObject(json));
+            json = ow.writeValueAsString(this.availability);
+            ret.put("availability",new JSONArray(json));
+            json = ow.writeValueAsString(this.battery);
+            ret.put("battery",new JSONObject(json));
+            json = ow.writeValueAsString(this.camera);
+            ret.put("camera",new JSONObject(json));
+            json = ow.writeValueAsString(this.connectivity);
+            ret.put("connectivity",new JSONObject(json));
+            json = ow.writeValueAsString(this.display);
+            ret.put("display",new JSONObject(json));
+            json = ow.writeValueAsString(this.hardware);
+            ret.put("hardware",new JSONObject(json));
+            json = ow.writeValueAsString(this.images);
+            ret.put("images",new JSONArray(json));
+            json = ow.writeValueAsString(this.sizeAndWeight);
+            ret.put("sizeAndWeight",new JSONObject(json));
+            json = ow.writeValueAsString(this.storage);
+            ret.put("storage",new JSONObject(json));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+
     }
 }

@@ -19,6 +19,7 @@ package dev.openshift.tapestry.angular.pages;
 import java.io.IOException;
 import java.io.InputStream;
 
+import dev.openshift.tapestry.angular.data.PhoneDetails;
 import dev.openshift.tapestry.angular.services.PhoneCatalog;
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
@@ -38,8 +39,13 @@ import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.Response;
 
 @Import(stylesheet={"context:/css/phonecat/app.css","context:/css/phonecat/bootstrap.css"},
-		library={"context:js/index.js","context:js/controllers-index.js"})
-@Events({ "partial","phones"})
+		library={
+                "context:js/vendor/angular-route/angular-route.js",
+                "context:js/vendor/angular-resource/angular-resource.js",
+                "context:js/index.js",
+                "context:js/services/CommentService.js",
+                "context:js/controllers/controllers-index.js"})
+@Events({ "partial","phones","phoneDetails"})
 public class Index
 {
 	private final String path = "dev/openshift/tapestry/angular/pages/";
@@ -55,10 +61,8 @@ public class Index
 
     @OnEvent(value="phoneDetails")
     JSONObject onReturnPhoneDetails(String name) {
-        String phonesDetails= catalog.getPhonesDetailsAsString(name);
-        return new JSONObject(phonesDetails);
-        //String fileName = path + "phones/"+name+".json";
-        //return createStreamResponseFromFile(fileName);
+        PhoneDetails details= catalog.getPhonesDetails(name);
+        return details.getJSONObject();
     }
 
 	 @OnEvent(value="partial")
