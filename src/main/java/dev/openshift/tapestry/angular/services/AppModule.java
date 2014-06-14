@@ -114,7 +114,7 @@ public class AppModule {
 	 public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
 	 {
 	       
-	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "classpath:dev/openshift/tapestry/angular/vendor");
+	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "context:js/vendor");
 	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.0.1");
 	        configuration.add(AngularSymbolConstants.ANGULAR_PAGES_SUBPACKAGE, "a");
 	 }

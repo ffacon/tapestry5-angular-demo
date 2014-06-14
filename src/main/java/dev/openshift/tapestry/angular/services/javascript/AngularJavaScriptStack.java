@@ -66,17 +66,19 @@ public class AngularJavaScriptStack implements JavaScriptStack {
         	//.map(pathToStylesheetLink).toList();
 
             javaScriptStack = F
-                .flow("${angular.core.path}/angular-${angular.version}/angular-${angular.version}.min.js")
+                .flow("${angular.core.path}/angular/angular.min.js")
             .map(pathToAsset).toList();
+
 
         } else {
         	
         	//stylesheetStack = F.flow("${angular.core.path}/angular-${angular.version}/angular-${angular.version}.css")
         	//.map(pathToStylesheetLink).toList();
 
+
             javaScriptStack = F
-                .flow(  "${angular.core.path}/angular-${angular.version}/angular-${angular.version}.js")
-            .map(pathToAsset).toList();
+                    .flow(  "${angular.core.path}/angular/angular.js")
+                    .map(pathToAsset).toList();
 
         }
 
