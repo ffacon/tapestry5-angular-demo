@@ -2,11 +2,21 @@
 
 /* App Module */
 
+
 angular.module('phonecat', ['ngRoute','ngResource']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-      when('/phones', {templateUrl: './Index:partial/phones',   controller: PhoneListCtrl}).
-      when('/phones/:phoneId', {templateUrl: './Index:partial/phone-details-step8', controller: 'PhoneDetailCtrl'}).
+      when('/phones',
+            {
+                templateUrl:function()
+                {return window.location.origin + window.location.pathname + 'partials/phones.html';}
+                , controller: PhoneListCtrl}).
+      when('/phones/:phoneId',
+            {
+                templateUrl:function()
+                {return window.location.origin + window.location.pathname + 'partials/phone-details.html';}
+                , controller: 'PhoneDetailCtrl'
+            }).
       otherwise({redirectTo: '/phones'});
 }]).config(['$httpProvider', function($httpProvider) {
     //add header to allow tapestry to serve data
