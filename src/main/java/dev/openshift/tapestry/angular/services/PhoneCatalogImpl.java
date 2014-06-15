@@ -1,10 +1,12 @@
 package dev.openshift.tapestry.angular.services;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 
+import dev.openshift.tapestry.angular.data.Comment;
 import dev.openshift.tapestry.angular.data.Phone;
 import dev.openshift.tapestry.angular.data.PhoneDetails;
 
@@ -25,11 +27,15 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
     private Hashtable<String, String> hPhoneDetailsJSON;
 
+    private List<Comment> comments;
+
     private final String path = "dev/openshift/tapestry/angular/pages/phones/";
 
     public PhoneCatalogImpl() {
 
         try {
+
+            comments = new ArrayList<Comment>();
 
             final String filePath = path + "phones.json";
             // read the json file
@@ -107,6 +113,21 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
     public String getPhonesDetailsAsString(String id) {
         return hPhoneDetailsJSON.get(id);
+    }
+
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public List<Comment> getComment(String phoneId) {
+        List<Comment> ret = new ArrayList<Comment>();
+        for(Comment c : comments)
+        {
+            if(c.getPhoneId().equals(phoneId)) ret.add(c);
+        }
+        return ret;
+
     }
 
 
