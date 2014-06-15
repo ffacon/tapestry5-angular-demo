@@ -130,4 +130,8 @@ public class AppModule {
      }
 
 
+    public static void contributeIgnoredPathsFilter(Configuration<String> configuration)
+    {
+        configuration.add("/partials/*");
+    }
 }

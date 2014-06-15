@@ -48,7 +48,6 @@ import org.apache.tapestry5.services.Response;
 @Events({ "partial","phones","phoneDetails"})
 public class Index
 {
-	private final String path = "dev/openshift/tapestry/angular/pages/";
 
     @Inject
     PhoneCatalog catalog;
@@ -64,42 +63,4 @@ public class Index
         PhoneDetails details= catalog.getPhonesDetails(name);
         return details.getJSONObject();
     }
-
-	 @OnEvent(value="partial")
-	 StreamResponse onReturnPartials(String name) {
-	        final String fileName = path + "partials/"+name+".html";
-	        return createStreamResponseFromFile(fileName);
-	    }
-	
-
-	 
-	 private StreamResponse createStreamResponseFromFile(final String fileName){
-           
-	        return new StreamResponse() {
-	            InputStream inputStream;
-	           
-	            public void prepareResponse(Response response) {
-	                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-	                inputStream = classLoader.getResourceAsStream(fileName);
-
-	                // Set content length to prevent chunking - see
-	                // http://tapestry-users.832.n2.nabble.com/Disable-Transfer-Encoding-chunked-from-StreamResponse-td5269662.html#a5269662
-
-	                try {
-	                    response.setHeader("Content-Length", "" + inputStream.available());
-	                }
-	                catch (IOException e) {
-	                    // Ignore the exception in this simple example.
-	                }
-	            }
-	            public String getContentType() {
-	                return "text/plain";
-	            }
-
-	            public InputStream getStream() throws IOException {
-	                return inputStream;
-	            }
-	        };
-	    }
-	 
 }
