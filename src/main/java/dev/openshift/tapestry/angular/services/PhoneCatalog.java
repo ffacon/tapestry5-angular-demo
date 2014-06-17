@@ -24,5 +24,7 @@ public interface PhoneCatalog
 
     List<Comment> getComment(String id);
 
+    Comment incLike(int commentId);
+
 
 }

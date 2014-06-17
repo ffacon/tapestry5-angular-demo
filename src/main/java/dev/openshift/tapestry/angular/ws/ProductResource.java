@@ -30,7 +30,6 @@ public class ProductResource {
     }
 
     @POST
-    //@Path("/comments/{id}")
     @Path("/comments")
     @Consumes("application/json")
     public Response postComment(Comment comment) {
@@ -47,6 +46,16 @@ public class ProductResource {
     public List<Comment> getComments(@PathParam("id")String id) {
 
         List<Comment> ret = phoneCatalog.getComment(id);
+        return ret;
+
+    }
+
+    @GET
+    @Path("/comments/like/{id}")
+    @Consumes("application/json")
+    public Comment incLike(@PathParam("id")int id) {
+
+        Comment ret = phoneCatalog.incLike(id);
         return ret;
 
     }

@@ -31,7 +31,11 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
     private final String path = "dev/openshift/tapestry/angular/pages/phones/";
 
+    private int commentInc;
+
     public PhoneCatalogImpl() {
+
+        commentInc = 0;
 
         try {
 
@@ -117,6 +121,7 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
 
     public void addComment(Comment comment) {
+        comment.setId(commentInc++);
         comments.add(comment);
     }
 
@@ -127,8 +132,19 @@ public class PhoneCatalogImpl implements PhoneCatalog
             if(c.getPhoneId().equals(phoneId)) ret.add(c);
         }
         return ret;
-
     }
+
+    public  Comment incLike(int commentId) {
+
+            for(Comment c : comments)
+            {
+                if(c.getId() == commentId) {
+                    c.setLikes(c.getLikes()+1);
+                    return c;
+                }
+            }
+            return new Comment();
+        }
 
 
 }

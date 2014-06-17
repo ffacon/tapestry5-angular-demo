@@ -7,6 +7,7 @@ public class Comment {
     private String author;
     private String content;
     private int likes;
+    private int id;
 
     public Comment() {
     }
@@ -42,5 +43,13 @@ public class Comment {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

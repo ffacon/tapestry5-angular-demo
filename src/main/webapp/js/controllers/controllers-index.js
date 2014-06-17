@@ -27,7 +27,7 @@ angular.module('phonecat')
 
         /** Increments the number of likes of a comment, and saves the changes. */
         $scope.addLike = function(comment) {
-            comment.$like();
+            comment.$like(comment.id);
         };
 
         /** Deletes a comment. */
