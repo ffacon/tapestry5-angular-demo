@@ -30,9 +30,9 @@ angular.module('phonecat')
             comment.$like(comment.id);
         };
 
-        /** Deletes a comment. */
+        /** Delete a comment. */
         $scope.deleteComment = function(comment) {
-            news.$delete(function(){
+            comment.$delete(comment.id,function(){
                 $scope.comments.splice($scope.comments.indexOf(comment),1);
             });
 

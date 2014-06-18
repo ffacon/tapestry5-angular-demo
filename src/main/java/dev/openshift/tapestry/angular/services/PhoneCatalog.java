@@ -26,5 +26,7 @@ public interface PhoneCatalog
 
     Comment incLike(int commentId);
 
+    Comment deleteComment(int commentId);
+
 
 }

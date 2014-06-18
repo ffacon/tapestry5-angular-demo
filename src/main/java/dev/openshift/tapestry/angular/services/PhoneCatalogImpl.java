@@ -146,5 +146,15 @@ public class PhoneCatalogImpl implements PhoneCatalog
             return new Comment();
         }
 
+    public  Comment deleteComment(int commentId) {
 
+        for(Comment c : comments)
+        {
+            if(c.getId() == commentId) {
+                comments.remove(c);
+                return c;
+            }
+        }
+        return new Comment();
+    }
 }

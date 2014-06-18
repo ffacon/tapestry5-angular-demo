@@ -60,4 +60,14 @@ public class ProductResource {
 
     }
 
+    @DELETE
+    @Path("/comments/{id}")
+    @Consumes("application/json")
+    public Comment deleteComment(@PathParam("id")int id) {
+
+        Comment ret = phoneCatalog.incLike(id);
+        return ret;
+
+    }
+
 }
