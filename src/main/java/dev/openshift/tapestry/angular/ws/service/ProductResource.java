@@ -1,4 +1,4 @@
-package dev.openshift.tapestry.angular.ws;
+package dev.openshift.tapestry.angular.ws.service;
 
 import dev.openshift.tapestry.angular.data.Comment;
 import dev.openshift.tapestry.angular.data.PhoneDetails;
