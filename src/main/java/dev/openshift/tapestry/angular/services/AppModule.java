@@ -1,10 +1,12 @@
 package dev.openshift.tapestry.angular.services;
 
+import dev.openshift.tapestry.angular.ws.security.SecurityInterceptor;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.MethodAdviceReceiver;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.LoggingAdvisor;
@@ -134,4 +136,11 @@ public class AppModule {
     {
         configuration.add("/partials/*");
     }
+
+    /*
+    @Contribute(javax.ws.rs.core.Application.class)
+    public static void configureRestProviders(Configuration<Object> singletons, SecurityInterceptor authorisationInterceptor)
+    {
+        singletons.add(authorisationInterceptor);
+    }*/
 }
