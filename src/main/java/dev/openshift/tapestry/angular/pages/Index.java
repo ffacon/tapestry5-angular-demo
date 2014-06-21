@@ -43,6 +43,8 @@ import org.apache.tapestry5.services.Response;
                 "context:js/vendor/angular-route/angular-route.js",
                 "context:js/vendor/angular-resource/angular-resource.js",
                 "context:js/index.js",
+                "context:js/services/http-auth-interceptor.js",
+                "context:js/services/auth-utils.js",
                 "context:js/services/CommentService.js",
                 "context:js/controllers/controllers-index.js"})
 @Events({ "partial","phones","phoneDetails"})

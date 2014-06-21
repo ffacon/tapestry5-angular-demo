@@ -1,24 +1,79 @@
 'use strict';
 
-/* App Module */
 
-
-angular.module('phonecat', ['ngRoute','ngResource']).
-  config(['$routeProvider', function($routeProvider) {
+var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute']).
+  config(['$routeProvider','$httpProvider','USER_ROLES', function($routeProvider,$httpProvider,USER_ROLES) {
   $routeProvider.
       when('/phones',
             {
                 templateUrl:function()
-                {return window.location.origin + window.location.pathname + 'partials/phones.html';}
-                , controller: PhoneListCtrl}).
+                    {return window.location.origin + window.location.pathname + 'partials/phones.html';},
+                controller: PhoneListCtrl,
+                access: {
+                    authorizedRoles: [USER_ROLES.all]
+                }
+            }).
+      when('/login',
+      {
+          templateUrl:function()
+          {return window.location.origin + window.location.pathname + 'partials/login.html';},
+          controller: PhoneListCtrl,
+          access: {
+              authorizedRoles: [USER_ROLES.all]
+          }
+      }).
       when('/phones/:phoneId',
             {
                 templateUrl:function()
-                {return window.location.origin + window.location.pathname + 'partials/phone-details.html';}
-                , controller: 'PhoneDetailCtrl'
+                    {return window.location.origin + window.location.pathname + 'partials/phone-details.html';},
+                controller: 'PhoneDetailCtrl',
+                access: {
+                    authorizedRoles: [USER_ROLES.all]
+                }
             }).
       otherwise({redirectTo: '/phones'});
-}]).config(['$httpProvider', function($httpProvider) {
+    }])
+.config(['$httpProvider', function($httpProvider)
+    {
     //add header to allow tapestry to serve data
     //see https://github.com/angular/angular.js/issues/1004
-    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';}]);
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    }])
+.run(['$rootScope', '$location', '$http', 'AuthenticationSharedService', 'Session', 'USER_ROLES',
+        function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
+            $rootScope.$on('$routeChangeStart', function (event, next) {
+                $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
+                $rootScope.userRoles = USER_ROLES;
+                AuthenticationSharedService.valid(next.access.authorizedRoles);
+            });
+
+            // Call when the the client is confirmed
+            $rootScope.$on('event:auth-loginConfirmed', function(data) {
+                $rootScope.authenticated = true;
+                if ($location.path() === "/login") {
+                    $location.path('/').replace();
+                }
+            });
+
+            // Call when the 401 response is returned by the server
+            $rootScope.$on('event:auth-loginRequired', function(rejection) {
+                Session.invalidate();
+                $rootScope.authenticated = false;
+                if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register" &&
+                    $location.path() !== "/activate") {
+                    $location.path('/login').replace();
+                }
+            });
+
+            // Call when the 403 response is returned by the server
+            $rootScope.$on('event:auth-notAuthorized', function(rejection) {
+                $rootScope.errorMessage = 'errors.403';
+                $location.path('/error').replace();
+            });
+
+            // Call when the user logs out
+            $rootScope.$on('event:auth-loginCancelled', function() {
+                $location.path('');
+            });
+        }]);;
+
