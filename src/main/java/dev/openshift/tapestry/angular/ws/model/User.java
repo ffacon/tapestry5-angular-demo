@@ -29,8 +29,16 @@ public class User implements Serializable
 	
 	@XmlElement(name="last-modified")
 	private Date lastModified;
-	
-	public Date getLastModified() {
+
+    @XmlElement(name="email")
+    private String email;
+
+    @XmlElement(name="login")
+    private String login;
+
+
+
+    public Date getLastModified() {
 		return lastModified;
 	}
 	public void setLastModified(Date lastModified) {
@@ -60,4 +68,10 @@ public class User implements Serializable
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+    public String getEmail() {return email;}
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getLogin() {return login;}
+    public void setLogin(String login) { this.login = login; }
 }

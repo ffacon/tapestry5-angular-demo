@@ -18,6 +18,7 @@ public class UserDatabase
 		user.setLastName("user");
 		user.setUri("/user-management/users/1");
 		user.setLastModified(new Date());
+        user.setEmail("demo@demo.com");
 		users.put(1, user);
 	}
 	
