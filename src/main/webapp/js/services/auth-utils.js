@@ -16,7 +16,7 @@ phonecat.factory('Activate', ['$resource',
 
 phonecat.factory('Account', ['$resource',
     function ($resource) {
-        return $resource('app/rest/account', {}, {
+        return $resource(window.location.origin + window.location.pathname +'api/app/user/account', {}, {
         });
     }]);
 
@@ -103,10 +103,10 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
         return {
             login: function (param) {
                 var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
-                $http.post('app/authentication', data, {
-                    headers: {
+                $http.post(window.location.origin + window.location.pathname +'api/app/user/authentication', param, {
+                   /* headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
-                    },
+                    },*/
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                         Account.get(function(data) {
@@ -121,7 +121,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
             },
             valid: function (authorizedRoles) {
 
-                $http.get('protected/transparent.gif', {
+                $http.get(window.location.origin + window.location.pathname +'api/app/user/validate', {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                         if (!Session.login) {
