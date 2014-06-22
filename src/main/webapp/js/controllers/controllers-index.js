@@ -51,7 +51,7 @@ angular.module('phonecat')
 
     }]);
 
-phonecat.controller('LoginController', ['$scope', '$location', 'AuthenticationSharedService',
+phonecat.controller('LoginCtrl', ['$scope', '$location', 'AuthenticationSharedService',
     function ($scope, $location, AuthenticationSharedService) {
         $scope.rememberMe = true;
         $scope.login = function () {

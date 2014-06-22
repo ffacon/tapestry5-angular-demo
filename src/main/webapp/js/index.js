@@ -17,7 +17,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       {
           templateUrl:function()
           {return window.location.origin + window.location.pathname + 'partials/login.html';},
-          controller: PhoneListCtrl,
+          controller: 'LoginCtrl',
           access: {
               authorizedRoles: [USER_ROLES.all]
           }
