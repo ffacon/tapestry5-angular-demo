@@ -10,6 +10,8 @@ public interface UserDatabase
 
 	User getUserById(Integer id);
 
+    User getUserByLogin(String login);
+
 	void updateUser(Integer id);
 	
 	Date getLastModifiedById(Integer id);

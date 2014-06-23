@@ -13,22 +13,48 @@ public class UserDatabaseImpl implements UserDatabase
 
     public UserDatabaseImpl()
 	{
-		User user = new User();
-		user.setId(1);
-		user.setFirstName("demo");
-		user.setLastName("user");
-		user.setUri("/user-management/users/1");
-		user.setLastModified(new Date());
-        user.setEmail("demo@demo.com");
-		users.put(1, user);
-	}
+		User userAdmin = new User();
+        userAdmin.setId(1);
+        userAdmin.setFirstName("user");
+        userAdmin.setLastName("admin");
+        userAdmin.setUri("/user-management/users/1");
+        userAdmin.setLastModified(new Date());
+        userAdmin.setEmail("admin@user.com");
+        userAdmin.setPassword("password");
+        userAdmin.setLogin("admin");
+        String[] rolesAdmin = {"ROLE_ADMIN", "ROLE_USER"};
+        userAdmin.setRoles(rolesAdmin);
+		users.put(1, userAdmin);
+
+        User user = new User();
+        user.setId(2);
+        user.setFirstName("simple");
+        user.setLastName("user");
+        user.setUri("/user-management/users/2");
+        user.setLastModified(new Date());
+        user.setEmail("simple.user@user.com");
+        user.setPassword("password");
+        user.setLogin("user");
+        String[] roles =  {"ROLE_USER"};
+        user.setRoles(roles);
+        users.put(2, user);
+
+
+    }
 	
 	public  User getUserById(Integer id)
 	{
 		return users.get(id);
 	}
-	
-	public  void updateUser(Integer id)
+
+    public User getUserByLogin(String login) {
+        for (User user : users.values()) {
+            if(user.getLogin().equals(login)) return user;
+        }
+        return null;
+    }
+
+    public  void updateUser(Integer id)
 	{
 		User user = users.get(id);
 		user.setLastModified(new Date());

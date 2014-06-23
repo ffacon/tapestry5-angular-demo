@@ -4,6 +4,7 @@ import dev.openshift.tapestry.angular.data.user.Login;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import dev.openshift.tapestry.angular.data.user.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.jboss.resteasy.util.Base64;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -51,29 +52,30 @@ public class UserService
 
     @POST
     @Path("/authentication")
-    @Consumes("application/json")
+    @Consumes("application/x-www-form-urlencoded")
     @PermitAll
-    public Response authentication(Login login) {
-
-
-        Response.ResponseBuilder rb = Response.ok();
-        return rb.build();
-
+    public Response postLogin(@FormParam("j_username") String username,@FormParam("j_password") String password) {
+        Response.ResponseBuilder rb;
+        User user = userDatabase.getUserByLogin(username);
+        if(user != null && user.getPassword().equals(password)){
+            String userPassword= username + ":" + password;
+            String basicAuth = "Basic "+ new String(Base64.encodeBytes(userPassword.getBytes()));
+            rb = Response.ok().header("Authorization",basicAuth);
+            return rb.build();
+        }else{
+            return Response.status(Response.Status.BAD_REQUEST).entity("invalid login or password").build();
+        }
     }
+
+
+
 
     @GET
     @Path("/account")
     @PermitAll
     public Response account( @Context Request req)
     {
-        User user = new User();
-        user.setId(1);
-        user.setFirstName("demo");
-        user.setLastName("user");
-        user.setUri("/user-management/users/1");
-        user.setLastModified(new Date());
-        user.setEmail("demo@demo.com");
-
+        User user = userDatabase.getUserById(1);
         Response.ResponseBuilder rb = Response.ok(user);
         return rb.build();
     }

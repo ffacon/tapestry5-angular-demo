@@ -103,10 +103,10 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
         return {
             login: function (param) {
                 var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
-                $http.post(window.location.origin + window.location.pathname +'api/app/user/authentication', param, {
-                   /* headers: {
+                $http.post(window.location.origin + window.location.pathname +'api/app/user/authentication', data, {
+                   headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
-                    },*/
+                    },
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                         Account.get(function(data) {
