@@ -2,7 +2,7 @@ package dev.openshift.tapestry.angular.ws.service;
  
 import dev.openshift.tapestry.angular.data.user.Login;
 import dev.openshift.tapestry.angular.services.UserDatabase;
-import dev.openshift.tapestry.angular.ws.model.User;
+import dev.openshift.tapestry.angular.data.user.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.annotation.security.PermitAll;

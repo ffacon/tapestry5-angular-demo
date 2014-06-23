@@ -1,6 +1,6 @@
 package dev.openshift.tapestry.angular.services;
 
-import dev.openshift.tapestry.angular.ws.model.User;
+import dev.openshift.tapestry.angular.data.user.User;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package dev.openshift.tapestry.angular.ws.model;
+package dev.openshift.tapestry.angular.data.user;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,32 +9,25 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name = "user")
-public class User implements Serializable 
+public class User implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	@XmlAttribute(name = "id")
 	private int id;
 	
-	@XmlAttribute(name="uri")
 	private String uri;
 		
-	@XmlElement(name = "firstName")
 	private String firstName;
 	
-	@XmlElement(name = "lastName")
 	private String lastName;
 	
-	@XmlElement(name="last-modified")
 	private Date lastModified;
 
-    @XmlElement(name="email")
     private String email;
 
-    @XmlElement(name="login")
     private String login;
+
+    private String password;
 
 
 
@@ -74,4 +67,6 @@ public class User implements Serializable
     }
     public String getLogin() {return login;}
     public void setLogin(String login) { this.login = login; }
+    public String getPassword() {return password;}
+    public void setPassword(String password) {this.password = password;}
 }
