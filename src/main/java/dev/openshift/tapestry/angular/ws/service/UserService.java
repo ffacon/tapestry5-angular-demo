@@ -1,9 +1,9 @@
 package dev.openshift.tapestry.angular.ws.service;
  
-import dev.openshift.tapestry.angular.data.Comment;
 import dev.openshift.tapestry.angular.data.user.Login;
-import dev.openshift.tapestry.angular.ws.data.UserDatabase;
+import dev.openshift.tapestry.angular.services.UserDatabase;
 import dev.openshift.tapestry.angular.ws.model.User;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -17,13 +17,15 @@ import java.util.Date;
 @Path("/app/user")
 public class UserService
 {
+    @Inject
+    UserDatabase userDatabase;
 
     @GET
     @Path("/users/{id}")
     @PermitAll
     public Response getUserById(@PathParam("id") int id, @Context Request req)
     {
-        Response.ResponseBuilder rb = Response.ok(UserDatabase.getUserById(id));
+        Response.ResponseBuilder rb = Response.ok(userDatabase.getUserById(id));
         return rb.build();
     }
      
@@ -34,7 +36,7 @@ public class UserService
     public Response updateUserById(@PathParam("id") int id)
     {
         //Update the User resource
-        UserDatabase.updateUser(id);
+        userDatabase.updateUser(id);
         return Response.status(200).build();
     }
 
@@ -43,7 +45,7 @@ public class UserService
     @PermitAll
     public Response validate( @Context Request req)
     {
-        Response.ResponseBuilder rb = Response.ok();//UserDatabase.getUserById(1));
+        Response.ResponseBuilder rb = Response.ok();
         return rb.build();
     }
 
@@ -54,7 +56,7 @@ public class UserService
     public Response authentication(Login login) {
 
 
-        Response.ResponseBuilder rb = Response.ok();//UserDatabase.getUserById(1));
+        Response.ResponseBuilder rb = Response.ok();
         return rb.build();
 
     }
@@ -72,7 +74,7 @@ public class UserService
         user.setLastModified(new Date());
         user.setEmail("demo@demo.com");
 
-        Response.ResponseBuilder rb = Response.ok(user);//UserDatabase.getUserById(1));
+        Response.ResponseBuilder rb = Response.ok(user);
         return rb.build();
     }
 }
