@@ -34,20 +34,21 @@ public class AppModule {
 	 * @param pBinder
 	 *            to use
 	 */
-	public static void bind(final ServiceBinder pBinder) {
-		// This next line addresses an issue affecting GlassFish and JBoss - see http://blog.progs.be/?p=52
-		javassist.runtime.Desc.useContextClassLoader = true;
-        pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
+	 public static void bind(final ServiceBinder pBinder) {
+            // This next line addresses an issue affecting GlassFish and JBoss - see http://blog.progs.be/?p=52
+            javassist.runtime.Desc.useContextClassLoader = true;
+            pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
+            pBinder.bind(UserDatabase.class, UserDatabaseImpl.class);
 
-	}
+	 }
 	
 	// Tell Tapestry how to handle JBoss 7's classpath URLs - JBoss uses a "virtual file system".
 	// See "Running Tapestry on JBoss" in http://wiki.apache.org/tapestry/Tapestry5HowTos .
 
-	@SuppressWarnings("rawtypes")
-	public static void contributeServiceOverride(MappedConfiguration<Class, Object> configuration) {
-		configuration.add(ClasspathURLConverter.class, new ClasspathURLConverterJBoss7());
-	}
+	 @SuppressWarnings("rawtypes")
+	 public static void contributeServiceOverride(MappedConfiguration<Class, Object> configuration) {
+	 	    configuration.add(ClasspathURLConverter.class, new ClasspathURLConverterJBoss7());
+	 }
 
 	/**
 	 * AOP adviser for @LOG annotation, which we want to have for all service
@@ -62,49 +63,47 @@ public class AppModule {
 	 * @param pReceiver
 	 *            MethodAdviceReceiver
 	 */
-	@Match({ "*Service*", "*Dao*" })
-	public static void adviseLogging(final LoggingAdvisor pLoggingAdvisor,
-			final Logger pLogger, final MethodAdviceReceiver pReceiver) {
-		pLoggingAdvisor.addLoggingAdvice(pLogger, pReceiver);
-	}
+	 @Match({ "*Service*", "*Dao*" })
+	 public static void adviseLogging(final LoggingAdvisor pLoggingAdvisor,
+                                     final Logger pLogger,
+                                     final MethodAdviceReceiver pReceiver) {
+		    pLoggingAdvisor.addLoggingAdvice(pLogger, pReceiver);
+	 }
 
 	/**
 	 * @param pConfiguration
 	 *            to use
 	 */
-	public static void contributeApplicationDefaults(
-			final MappedConfiguration<String, Object> pConfiguration) {
-		// Contributions to ApplicationDefaults will override any contributions
-		// to
-		// FactoryDefaults (with the same key). Here we're restricting the
-		// supported
-		// locales to just "en" (English). As you add localised message catalogs
-		// and other assets,
-		// you can extend this list of locales (it's a comma separated series of
-		// locale names;
-		// the first locale name is the default when there's no reasonable
-		// match).
-		pConfiguration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
-		pConfiguration.add(SymbolConstants.MINIFICATION_ENABLED, false);
-		pConfiguration.add(SymbolConstants.HMAC_PASSPHRASE,
-				"a1TAzRnjBZRKubgwSRlpX");
-        pConfiguration.add(ResteasySymbols.MAPPING_PREFIX, "/api");
+	 public static void contributeApplicationDefaults(final MappedConfiguration<String, Object> pConfiguration) {
+            // Contributions to ApplicationDefaults will override any contributions
+            // to
+            // FactoryDefaults (with the same key). Here we're restricting the
+            // supported
+            // locales to just "en" (English). As you add localised message catalogs
+            // and other assets,
+            // you can extend this list of locales (it's a comma separated series of
+            // locale names;
+            // the first locale name is the default when there's no reasonable
+            // match).
+            pConfiguration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
+            pConfiguration.add(SymbolConstants.MINIFICATION_ENABLED, false);
+            pConfiguration.add(SymbolConstants.HMAC_PASSPHRASE,"a1TAzRnjBZRKubgwSRlpX");
+            pConfiguration.add(ResteasySymbols.MAPPING_PREFIX, "/api");
 
 
-	}
+	 }
 
 	/**
 	 * @param pConfiguration
 	 *            to use
 	 */
-	public static void contributeResponseCompressionAnalyzer(
-			final Configuration<String> pConfiguration) {
-		pConfiguration.add("application/json");
-	}
+     public static void contributeResponseCompressionAnalyzer(final Configuration<String> pConfiguration) {
+		    pConfiguration.add("application/json");
+	 }
 	
 	 public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)
 	 {
-	    	  	configuration.addInstance(AngularJavaScriptStack.STACK_ID, AngularJavaScriptStack.class); 
+	        configuration.addInstance(AngularJavaScriptStack.STACK_ID, AngularJavaScriptStack.class);
 	 }
 	
 	 public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
@@ -123,24 +122,18 @@ public class AppModule {
 	    
 	 public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
 	 {
-	        configuration.add("tap-angular", "org/got5/tapestry5");
+	        configuration.add("tap-angular", "dev/openshift/tapestry");
 	 }
 
      public static void contributeResteasyPackageManager(Configuration<String> configuration)
      {
-        configuration.add("dev.openshift.tapestry.angular.ws");
+            configuration.add("dev.openshift.tapestry.angular.ws");
      }
 
 
-    public static void contributeIgnoredPathsFilter(Configuration<String> configuration)
-    {
-        configuration.add("/partials/*");
-    }
+     public static void contributeIgnoredPathsFilter(Configuration<String> configuration)
+     {
+            configuration.add("/partials/*");
+     }
 
-    /*
-    @Contribute(javax.ws.rs.core.Application.class)
-    public static void configureRestProviders(Configuration<Object> singletons, SecurityInterceptor authorisationInterceptor)
-    {
-        singletons.add(authorisationInterceptor);
-    }*/
 }

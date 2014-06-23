@@ -1,4 +1,4 @@
-package dev.openshift.tapestry.angular.ws.data;
+package dev.openshift.tapestry.angular.services;
 
 import dev.openshift.tapestry.angular.ws.model.User;
 
@@ -6,11 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class UserDatabase 
+public class UserDatabaseImpl implements UserDatabase
 {
 	public static HashMap<Integer, User> users = new HashMap<Integer, User>();
-	
-	static 
+
+
+    public UserDatabaseImpl()
 	{
 		User user = new User();
 		user.setId(1);
@@ -22,18 +23,18 @@ public class UserDatabase
 		users.put(1, user);
 	}
 	
-	public static User getUserById(Integer id)
+	public  User getUserById(Integer id)
 	{
 		return users.get(id);
 	}
 	
-	public static void updateUser(Integer id)
+	public  void updateUser(Integer id)
 	{
 		User user = users.get(id);
 		user.setLastModified(new Date());
 	}
 	
-	public static Date getLastModifiedById(Integer id)
+	public  Date getLastModifiedById(Integer id)
 	{
 		return users.get(id).getLastModified();
 	}
