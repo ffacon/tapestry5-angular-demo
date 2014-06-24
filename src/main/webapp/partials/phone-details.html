@@ -10,6 +10,32 @@
   </li>
 </ul>
 
+<table >
+    <caption>Last comments</caption>
+    <thead>
+    <tr>
+        <th>Author</th>
+        <th>Content</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr  ng-repeat="comment in comments">
+        <td>{{comment.author}}</td>
+        <td>{{comment.content}}</td>
+        <td><button class="btn" ng-click="addLike(comment)"><img src="img/like.png" />{{comment.likes}}</button></td>
+        <td><button class="btn" ng-click="deleteComment(comment)"><img src="img/delete.png"/></button></td>
+    </tr>
+    <tr >
+        <td><input type="text" ng-model="addedComment.author" placeholder="author"/></td>
+        <td><input type="text" ng-model="addedComment.content" placeholder="content"/></td>
+        <td></td>
+        <td><button class="btn" ng-click="addComment(news)"><img src="img/add.png"/></button></td>
+    </tr>
+    </tbody>
+</table>
+
 <ul class="specs">
   <li>
     <span>Availability and Networks</span>
@@ -112,28 +138,3 @@
   </li>
 </ul>
 
-<table >
-    <caption>Last comments</caption>
-    <thead>
-    <tr>
-        <th>Author</th>
-        <th>Content</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr  ng-repeat="comment in comments">
-        <td>{{comment.author}}</td>
-        <td>{{comment.content}}</td>
-        <td><button class="btn" ng-click="addLike(comment)"><img src="img/like.png" />{{comment.likes}}</button></td>
-        <td><button class="btn" ng-click="deleteComment(comment)"><img src="img/delete.png"/></button></td>
-    </tr>
-    <tr >
-        <td><input type="text" ng-model="addedComment.author" placeholder="author"/></td>
-        <td><input type="text" ng-model="addedComment.content" placeholder="content"/></td>
-        <td></td>
-        <td><button class="btn" ng-click="addComment(news)"><img src="img/add.png"/></button></td>
-    </tr>
-    </tbody>
-</table>

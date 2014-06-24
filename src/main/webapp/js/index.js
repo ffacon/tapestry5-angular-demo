@@ -1,5 +1,6 @@
 'use strict';
 
+var httpHeaders;
 
 var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute']).
   config(['$routeProvider','$httpProvider','USER_ROLES', function($routeProvider,$httpProvider,USER_ROLES) {
@@ -32,6 +33,8 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
                 }
             }).
       otherwise({redirectTo: '/phones'});
+
+      httpHeaders = $httpProvider.defaults.headers;
     }])
 .config(['$httpProvider', function($httpProvider)
     {

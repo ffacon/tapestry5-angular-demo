@@ -1,6 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
  
 import dev.openshift.tapestry.angular.data.user.Login;
+import dev.openshift.tapestry.angular.data.user.Token;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import dev.openshift.tapestry.angular.data.user.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -59,8 +60,13 @@ public class UserService
         User user = userDatabase.getUserByLogin(username);
         if(user != null && user.getPassword().equals(password)){
             String userPassword= username + ":" + password;
-            String basicAuth = "Basic "+ new String(Base64.encodeBytes(userPassword.getBytes()));
-            rb = Response.ok().header("Authorization",basicAuth);
+            String basicAuth = new String(Base64.encodeBytes(userPassword.getBytes()));
+            Token token = new Token();
+            token.setAccess_token("Basic "+basicAuth);
+            token.setExpires_in(1799);
+            token.setToken_type("bearer");
+            token.setScope("read write");
+            rb = Response.ok(token);
             return rb.build();
         }else{
             return Response.status(Response.Status.BAD_REQUEST).entity("invalid login or password").build();

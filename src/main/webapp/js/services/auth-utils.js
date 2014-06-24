@@ -92,14 +92,83 @@ phonecat.factory('Session', [
         return this;
     }]);
 
+phonecat.factory('StorageService', function ($rootScope) {
+    return {
+
+        get: function (key) {
+            return JSON.parse(localStorage.getItem(key));
+        },
+
+        save: function (key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        },
+
+        remove: function (key) {
+            localStorage.removeItem(key);
+        },
+
+        clearAll : function () {
+            localStorage.clear();
+        }
+    };
+});
+phonecat.factory('AccessToken', ['$location', '$http', 'StorageService', '$rootScope',
+        function($location, $http, StorageService, $rootScope) {
+            var TOKEN = 'token';
+            var service = {};
+            var token = null;
+
+            service.get = function() {
+                // read the token from the localStorage
+                if (token == null) {
+                    token = StorageService.get(TOKEN);
+                }
+
+                if (token != null) {
+                    return token.access_token;
+                }
+
+                return null;
+            };
+
+            service.set = function(oauthResponse) {
+                token = {};
+                token.access_token = oauthResponse.access_token;
+                setExpiresAt(oauthResponse);
+                StorageService.save(TOKEN, token);
+                return token
+            };
+
+            service.remove = function() {
+                token = null;
+                StorageService.remove(TOKEN);
+                return token;
+            };
+
+            service.expired = function() {
+                return (token && token.expires_at && token.expires_at < new Date().getTime())
+            };
+
+            var setExpiresAt = function(oauthResponse) {
+                if (token) {
+                    var now = new Date();
+                    var minutes = parseInt(oauthResponse.expires_in) / 60;
+                    token.expires_at = new Date(now.getTime() + minutes*60000).getTime()
+                }
+            };
+
+            return service;
+        }]);
+
+
 phonecat.constant('USER_ROLES', {
     all: '*',
     admin: 'ROLE_ADMIN',
     user: 'ROLE_USER'
 });
 
-phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account',
-    function ($rootScope, $http, authService, Session, Account) {
+phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account','AccessToken',
+    function ($rootScope, $http, authService, Session, Account,AccessToken) {
         return {
             login: function (param) {
                 var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
@@ -109,6 +178,9 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                     },
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
+                        httpHeaders.common['Authorization'] = data.access_token;
+                        AccessToken.set(data);
+
                         Account.get(function(data) {
                             Session.create(data.login, data.firstName, data.lastName, data.email, data.roles);
                             $rootScope.account = Session;
@@ -120,11 +192,18 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                     });
             },
             valid: function (authorizedRoles) {
+                if(AccessToken.get() !== null) {
+                    httpHeaders.common['Authorization'] =  AccessToken.get();
+                }
 
                 $http.get(window.location.origin + window.location.pathname +'api/app/user/validate', {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
-                        if (!Session.login) {
+                        if (!Session.login || AccessToken.get() != undefined) {
+                            if (AccessToken.get() == undefined || AccessToken.expired()) {
+                                $rootScope.authenticated = false
+                                return;
+                            }
                             Account.get(function(data) {
                                 Session.create(data.login, data.firstName, data.lastName, data.email, data.roles);
                                 $rootScope.account = Session;
