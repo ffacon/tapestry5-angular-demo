@@ -11,14 +11,20 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 
 @Path("/app/user")
 public class UserService
 {
+    private static final String AUTHORIZATION_PROPERTY = "Authorization";
+    private static final String AUTHENTICATION_SCHEME = "Basic";
+
     @Inject
     UserDatabase userDatabase;
 
@@ -79,10 +85,32 @@ public class UserService
     @GET
     @Path("/account")
     @PermitAll
-    public Response account( @Context Request req)
+    public Response account( @Context Request req, @Context HttpHeaders headers)
     {
-        User user = userDatabase.getUserById(1);
-        Response.ResponseBuilder rb = Response.ok(user);
-        return rb.build();
+        String auth = headers.getHeaderString(AUTHORIZATION_PROPERTY);
+        //Get encoded username and password
+        final String encodedUserPassword = auth.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+
+        //Decode username and password
+        String usernameAndPassword;
+        try {
+            usernameAndPassword = new String(Base64.decode(encodedUserPassword));
+        } catch (IOException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("invalid token").build();
+        }
+
+        //Split username and password tokens
+        final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+        final String username = tokenizer.nextToken();
+        final String password = tokenizer.nextToken();
+
+        User user = userDatabase.getUserByLogin(username);
+        if(user != null && user.getPassword().equals(password)){
+
+            Response.ResponseBuilder rb = Response.ok(user);
+            return rb.build();
+        }else{
+            return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
+        }
     }
 }
