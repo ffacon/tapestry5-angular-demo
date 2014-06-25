@@ -15,6 +15,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 
+import dev.openshift.tapestry.angular.data.user.User;
+import dev.openshift.tapestry.angular.services.UserDatabase;
+import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
@@ -39,21 +42,26 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());;
 	private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());;
 
+    @Inject
+    UserDatabase userDatabase;
+
 	private boolean isUserAllowed(final String username, final String password,	final Set<String> rolesSet) 
 	{
 		boolean isAllowed = false;
 		
 		//Step 1. Fetch password from database and match with password in argument
-		//If both match then get the defined role for user from database and continue; else return isAllowed [false]
-		//Access the database and do this part yourself
-		//String userRole = userMgr.getUserRole(username);
-		String userRole = "ADMIN";
-		
-		//Step 2. Verify user role
-		if(rolesSet.contains(userRole))
-		{
-			isAllowed = true;
-		}
+        //If both match then get the defined role for user from database and continue; else return isAllowed [false]
+        User user = userDatabase.getUserByLogin(username);
+        if(user != null && user.getPassword().equals(password)){
+            String[] userRoles = user.getRoles();
+
+            for(String s : userRoles)
+            if(rolesSet.contains(s))
+            {
+                isAllowed = true;
+            }
+        }
+
 		return isAllowed;
 	}
 
@@ -101,9 +109,6 @@ public class SecurityInterceptor implements PreProcessInterceptor
         final String username = tokenizer.nextToken();
         final String password = tokenizer.nextToken();
 
-        //Verifying Username and password
-        System.out.println(username);
-        System.out.println(password);
 
         //Verify user access
         if(method.isAnnotationPresent(RolesAllowed.class))

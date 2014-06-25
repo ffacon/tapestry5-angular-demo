@@ -163,8 +163,8 @@ phonecat.factory('AccessToken', ['$location', '$http', 'StorageService', '$rootS
 
 phonecat.constant('USER_ROLES', {
     all: '*',
-    admin: 'ROLE_ADMIN',
-    user: 'ROLE_USER'
+    admin: 'ADMIN',
+    user: 'USER'
 });
 
 phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account','AccessToken',

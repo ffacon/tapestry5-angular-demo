@@ -22,7 +22,7 @@ public class UserDatabaseImpl implements UserDatabase
         userAdmin.setEmail("admin@user.com");
         userAdmin.setPassword("password");
         userAdmin.setLogin("admin");
-        String[] rolesAdmin = {"ROLE_ADMIN", "ROLE_USER"};
+        String[] rolesAdmin = {"ADMIN", "USER"};
         userAdmin.setRoles(rolesAdmin);
 		users.put(1, userAdmin);
 
@@ -35,7 +35,7 @@ public class UserDatabaseImpl implements UserDatabase
         user.setEmail("simple.user@user.com");
         user.setPassword("password");
         user.setLogin("user");
-        String[] roles =  {"ROLE_USER"};
+        String[] roles =  {"USER"};
         user.setRoles(roles);
         users.put(2, user);
 
