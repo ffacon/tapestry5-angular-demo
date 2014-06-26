@@ -113,4 +113,13 @@ public class UserService
             return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
         }
     }
+
+    @GET
+    @Path("/logout")
+    @PermitAll
+    public Response logout( @Context Request req)
+    {
+        Response.ResponseBuilder rb = Response.ok();
+        return rb.build();
+    }
 }
