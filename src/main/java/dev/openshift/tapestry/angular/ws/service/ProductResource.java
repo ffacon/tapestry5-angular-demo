@@ -18,20 +18,6 @@ public class ProductResource {
     @Inject
     PhoneCatalog phoneCatalog;
 
-
-    @GET
-    @Path("/get")
-    @Produces("application/json")
-    public Product getProductInJSON() {
-
-        Product product = new Product(1,"IPhone 5S",700.00,"/Assets/1");
-
-
-        return product;
-
-    }
-
-
     @POST
     @Path("/comments")
     @Consumes("application/json")
