@@ -248,8 +248,11 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                 $rootScope.authenticated = false;
                 $rootScope.account = null;
 
-                $http.get('app/logout');
+                AccessToken.remove();
+
+                $http.get(window.location.origin + window.location.pathname +'api/app/user/logout');
                 Session.invalidate();
+                delete httpHeaders.common['Authorization'];
                 authService.loginCancelled();
             }
         };
