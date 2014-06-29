@@ -61,7 +61,7 @@ public class ProductResource {
     @RolesAllowed("ADMIN")
     public Comment deleteComment(@PathParam("id")int id) {
 
-        Comment ret = phoneCatalog.incLike(id);
+        Comment ret = phoneCatalog.deleteComment(id);
         return ret;
 
     }
