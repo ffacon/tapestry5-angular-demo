@@ -4,6 +4,17 @@
         <title>Tapestry 5 Angular - ${pageTitle}</title>
     </head>
     <body ng-controller="PhoneListCtrl">
+        <header role="banner">
+
+            <p ng-if="account != null" >
+                Welcome,
+            <span id="user-name">
+            {{account.login}}
+            </span>
+                [<strong><a href="#" ng-click="logout()">Logout</a></strong>]
+            </p>
+
+        </header>
 		<t:body />
 	</body>
 </html>
