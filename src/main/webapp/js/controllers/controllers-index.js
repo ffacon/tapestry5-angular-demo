@@ -2,15 +2,21 @@
 
 /* Controllers */
 
-function PhoneListCtrl($scope, $http) {
+function PhoneListCtrl($scope, $http,AuthenticationSharedService,Session) {
   $http.get('./Index:phones').success(function(data) {
     $scope.phones = data;
-  });
+
+    });
+
+  $scope.logout = function() {
+        AuthenticationSharedService.logout();
+  };
 
   $scope.orderProp = 'age';
-}
+  $scope.login = Session.login;
+};
 
-PhoneListCtrl.$inject = ['$scope', '$http'];
+PhoneListCtrl.$inject = ['$scope', '$http','AuthenticationSharedService','Session'];
 
 
 angular.module('phonecat')
@@ -61,4 +67,9 @@ phonecat.controller('LoginCtrl', ['$scope', '$location', 'AuthenticationSharedSe
                 rememberMe: $scope.rememberMe
             })
         }
+    }]);
+
+phonecat.controller('LogoutController', ['$location', 'AuthenticationSharedService',
+    function ($location, AuthenticationSharedService) {
+        AuthenticationSharedService.logout();
     }]);
