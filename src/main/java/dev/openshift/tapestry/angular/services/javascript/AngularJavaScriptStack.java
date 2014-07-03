@@ -66,7 +66,9 @@ public class AngularJavaScriptStack implements JavaScriptStack {
         	//.map(pathToStylesheetLink).toList();
 
             javaScriptStack = F
-                .flow("${angular.core.path}/angular/angular.min.js")
+                .flow("${angular.core.path}/angular/angular.min.js",
+                      "${angular.core.path}/angular-route/angular-route.min.js",
+                      "${angular.core.path}/angular-resource/angular-resource.min.js")
             .map(pathToAsset).toList();
 
 
@@ -77,7 +79,9 @@ public class AngularJavaScriptStack implements JavaScriptStack {
 
 
             javaScriptStack = F
-                    .flow(  "${angular.core.path}/angular/angular.js")
+                    .flow(  "${angular.core.path}/angular/angular.js",
+                            "${angular.core.path}/angular-route/angular-route.js",
+                            "${angular.core.path}/angular-resource/angular-resource.js")
                     .map(pathToAsset).toList();
 
         }
