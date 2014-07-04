@@ -115,8 +115,8 @@ public class AppModule {
 	 public static void contributeFactoryDefaults(MappedConfiguration<String, String> configuration)
 	 {
 	       
-	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "context:js/vendor");
-	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.0.1");
+	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "context:js/bower_components");
+	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.2.18");
 	        configuration.add(AngularSymbolConstants.ANGULAR_PAGES_SUBPACKAGE, "a");
 	 }
 	    
