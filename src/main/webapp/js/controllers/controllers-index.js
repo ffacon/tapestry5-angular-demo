@@ -20,7 +20,8 @@ PhoneListCtrl.$inject = ['$scope', '$http','AuthenticationSharedService','Sessio
 
 
 angular.module('phonecat')
-    .controller('PhoneDetailCtrl', ['$scope', '$routeParams', '$http','CommentService', function ($scope, $routeParams, $http,CommentService) {
+    .controller('PhoneDetailCtrl', ['$scope','$rootScope', '$routeParams', '$http','CommentService',
+        function ($scope,$rootScope, $routeParams, $http,CommentService) {
 
         $http.get('./Index:phoneDetails/' + $routeParams.phoneId ).success(function(data) {
             $scope.phone = data;
@@ -29,7 +30,9 @@ angular.module('phonecat')
         $scope.comments = CommentService.query({id:$routeParams.phoneId});
 
         /** Creates a new comment. */
+
         $scope.addedComment = new CommentService();
+
 
         /** Increments the number of likes of a comment, and saves the changes. */
         $scope.addLike = function(comment) {
@@ -46,6 +49,8 @@ angular.module('phonecat')
 
         /** Adds a comment. */
         $scope.addComment = function() {
+            if($rootScope.account != null)
+                $scope.addedComment.author = $rootScope.account.login;
             $scope.addedComment.phoneId = $routeParams.phoneId;
             $scope.addedComment.$save(function(){
 
@@ -55,6 +60,13 @@ angular.module('phonecat')
 
         };
 
+        $scope.showButton = function(){
+                return $rootScope.authenticated;
+        }
+
+        $scope.requestLogin = function(){
+            $rootScope.$emit('event:auth-loginRequired');
+        }
     }]);
 
 phonecat.controller('LoginCtrl', ['$scope', '$location', 'AuthenticationSharedService',
