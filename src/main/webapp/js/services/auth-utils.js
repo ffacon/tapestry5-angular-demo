@@ -3,7 +3,7 @@
 
 phonecat.factory('Register', ['$resource',
     function ($resource) {
-        return $resource('app/rest/register', {}, {
+        return $resource(window.location.origin + window.location.pathname +'api/app/account/register', {}, {
         });
     }]);
 
