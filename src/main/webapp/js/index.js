@@ -40,6 +40,14 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
                     authorizedRoles: [USER_ROLES.all]
                 }
       }).
+      when('/register', {
+          templateUrl: function()
+          {return window.location.origin + window.location.pathname + 'partials/register.html';},
+          controller: 'RegisterController',
+          access: {
+              authorizedRoles: [USER_ROLES.all]
+          }
+      }).
       otherwise({redirectTo: '/phones',
                 access: {
                     authorizedRoles: [USER_ROLES.all]
