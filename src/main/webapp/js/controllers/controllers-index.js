@@ -86,8 +86,8 @@ phonecat.controller('LogoutController', ['$location', 'AuthenticationSharedServi
         AuthenticationSharedService.logout();
     }]);
 
-phonecat.controller('RegisterController', ['$scope', '$translate', 'Register',
-    function ($scope, $translate, Register) {
+phonecat.controller('RegisterController', ['$scope', 'Register',
+    function ($scope, Register) {
         $scope.success = null;
         $scope.error = null;
         $scope.doNotMatch = null;
@@ -96,7 +96,6 @@ phonecat.controller('RegisterController', ['$scope', '$translate', 'Register',
             if ($scope.registerAccount.password != $scope.confirmPassword) {
                 $scope.doNotMatch = "ERROR";
             } else {
-                $scope.registerAccount.langKey = $translate.use();
                 $scope.doNotMatch = null;
                 Register.save($scope.registerAccount,
                     function (value, responseHeaders) {
