@@ -16,4 +16,6 @@ public interface UserDatabase
 	
 	Date getLastModifiedById(Integer id);
 
+    User add(User user);
+
 }
