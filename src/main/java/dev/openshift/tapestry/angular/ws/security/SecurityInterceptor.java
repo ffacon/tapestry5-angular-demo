@@ -12,7 +12,9 @@ import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
 import dev.openshift.tapestry.angular.data.user.User;
@@ -33,8 +35,7 @@ import org.jboss.resteasy.util.Base64;
  * based on username and password provided in request
  * */
 @Provider
-@ServerInterceptor
-public class SecurityInterceptor implements PreProcessInterceptor
+public class SecurityInterceptor implements javax.ws.rs.container.ContainerRequestFilter
 {
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final String AUTHENTICATION_SCHEME = "Basic";
@@ -53,7 +54,7 @@ public class SecurityInterceptor implements PreProcessInterceptor
         //If both match then get the defined role for user from database and continue; else return isAllowed [false]
         User user = userDatabase.getUserByLogin(username);
         if(user != null && user.getPassword().equals(password)){
-            String[] userRoles = user.getRoles();
+            List<String> userRoles = user.getRoles();
 
             for(String s : userRoles)
             if(rolesSet.contains(s))
@@ -66,64 +67,68 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	}
 
     @Override
-    public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethodInvoker resourceMethodInvoker) throws Failure, WebApplicationException {
+    public void filter(ContainerRequestContext requestContext) throws IOException   {
 
-        Method method = resourceMethodInvoker.getMethod();
+        ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker)
+                requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+        Method method = methodInvoker.getMethod();
 
         //Access allowed for all
-        if(method.isAnnotationPresent(PermitAll.class))
+        if( ! method.isAnnotationPresent(PermitAll.class))
         {
-            return null;
-        }
-        //Access denied for all
-        if(method.isAnnotationPresent(DenyAll.class))
-        {
-            return ACCESS_FORBIDDEN;
-        }
-
-        //Get request headers
-        final HttpHeaders headers = httpRequest.getHttpHeaders();
-
-        //Fetch authorization header
-        final List<String> authorization = headers.getRequestHeader(AUTHORIZATION_PROPERTY);
-
-        //If no authorization information present; block access
-        if(authorization == null || authorization.isEmpty())
-        {
-            return ACCESS_DENIED;
-        }
-
-        //Get encoded username and password
-        final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-
-        //Decode username and password
-        String usernameAndPassword;
-        try {
-            usernameAndPassword = new String(Base64.decode(encodedUserPassword));
-        } catch (IOException e) {
-            return SERVER_ERROR;
-        }
-
-        //Split username and password tokens
-        final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-        final String username = tokenizer.nextToken();
-        final String password = tokenizer.nextToken();
-
-
-        //Verify user access
-        if(method.isAnnotationPresent(RolesAllowed.class))
-        {
-            RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-            Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
-
-            //Is user valid?
-            if( ! isUserAllowed(username, password, rolesSet))
+            //Access denied for all
+            if(method.isAnnotationPresent(DenyAll.class))
             {
-                return ACCESS_DENIED;
+                requestContext.abortWith(ACCESS_FORBIDDEN);
+                return;
             }
-        }
 
-        //Return null to continue request processing
-        return null;
+            //Get request headers
+            final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+
+            //Fetch authorization header
+            final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+
+            //If no authorization information present; block access
+            if(authorization == null || authorization.isEmpty())
+            {
+                requestContext.abortWith(ACCESS_DENIED);
+                return;
+            }
+
+            //Get encoded username and password
+            final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+
+            //Decode username and password
+            String usernameAndPassword;
+            try {
+                usernameAndPassword = new String(Base64.decode(encodedUserPassword));
+            } catch (IOException e) {
+                requestContext.abortWith(SERVER_ERROR);
+                return;
+            }
+
+            //Split username and password tokens
+            final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+            final String username = tokenizer.nextToken();
+            final String password = tokenizer.nextToken();
+
+
+            //Verify user access
+            if(method.isAnnotationPresent(RolesAllowed.class))
+            {
+                RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+                Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
+
+                //Is user valid?
+                if( ! isUserAllowed(username, password, rolesSet))
+                {
+                    requestContext.abortWith(ACCESS_DENIED);
+                }
+            }
+
+        }
     }
+
+
 }
