@@ -1,20 +1,30 @@
 package dev.openshift.tapestry.angular.data.user;
 
+import org.apache.tapestry5.beaneditor.NonVisual;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+@Entity
 public class User implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private int id;
+    @Transient
+    private int id;
 	private String uri;
 	private String firstName;
 	private String lastName;
 	private Date lastModified;
     private String email;
+    @Id
     private String login;
     private String password;
-    private String[] roles;
+    @ElementCollection
+    @CollectionTable(name="Roles", joinColumns=@JoinColumn(name="user_login"))
+    @Column(name="roles")
+    private List<String> roles;
 
     public User() {}
 
@@ -66,10 +76,10 @@ public class User implements Serializable
     public void setPassword(String password) {
         this.password = password;
     }
-    public String[] getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
-    public void setRoles(String[] roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 }
