@@ -2,10 +2,9 @@ package dev.openshift.tapestry.angular.services;
 
 import dev.openshift.tapestry.angular.ws.security.SecurityInterceptor;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.ioc.Configuration;
-import org.apache.tapestry5.ioc.MappedConfiguration;
-import org.apache.tapestry5.ioc.MethodAdviceReceiver;
-import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.hibernate.HibernateSymbols;
+import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
+import org.apache.tapestry5.ioc.*;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
@@ -39,6 +38,7 @@ public class AppModule {
             javassist.runtime.Desc.useContextClassLoader = true;
             pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
             pBinder.bind(UserDatabase.class, UserDatabaseImpl.class);
+            pBinder.bind(UserDAO.class, UserDAOImpl.class);
 
 	 }
 	
@@ -136,4 +136,10 @@ public class AppModule {
             configuration.add("/partials/*");
      }
 
+     @Match("*DAO")
+     public static <T> T decorateTransactionally(HibernateTransactionDecorator decorator, Class<T> serviceInterface,
+                                                T delegate, ServiceResources resources)
+     {
+        return decorator.build(serviceInterface, delegate, resources.getServiceId());
+     }
 }
