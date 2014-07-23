@@ -13,6 +13,6 @@
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.jdbc.batch_size">0</property>
         <mapping class="dev.openshift.tapestry.angular.data.user.User"/>
-        <mapping class="dev.openshift.tapestry.angular.data.Comment"/>
+        <mapping class="dev.openshift.tapestry.angular.entity.Comment"/>
     </session-factory>
 </hibernate-configuration>
