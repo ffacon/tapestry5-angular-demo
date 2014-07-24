@@ -27,14 +27,19 @@
         <td><button class="btn" ng-click="addLike(comment)"><img src="img/like.png" />{{comment.likes}}</button></td>
         <td><button class="btn" ng-click="deleteComment(comment)"><img src="img/delete.png"/></button></td>
     </tr>
-    <tr >
-        <td><input type="text" ng-model="addedComment.author" placeholder="author"/></td>
+    <tr ng-if="account != null">
+        <td></td>
         <td><input type="text" ng-model="addedComment.content" placeholder="content"/></td>
         <td></td>
         <td><button class="btn" ng-click="addComment(news)"><img src="img/add.png"/></button></td>
     </tr>
     </tbody>
+
 </table>
+<p>
+    <button ng-hide="showButton()" class="btn" ng-click="requestLogin()">Add comment</button>
+</p>
+
 
 <ul class="specs">
   <li>
