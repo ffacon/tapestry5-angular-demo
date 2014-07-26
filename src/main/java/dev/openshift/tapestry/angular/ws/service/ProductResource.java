@@ -1,8 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
 
-import dev.openshift.tapestry.angular.data.Comment;
-import dev.openshift.tapestry.angular.data.PhoneDetails;
-import dev.openshift.tapestry.angular.data.Product;
+import dev.openshift.tapestry.angular.entity.Comment;
+import dev.openshift.tapestry.angular.services.CommentDAO;
 import dev.openshift.tapestry.angular.services.PhoneCatalog;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
@@ -18,14 +17,17 @@ public class ProductResource {
     @Inject
     PhoneCatalog phoneCatalog;
 
+    @Inject
+    CommentDAO comments;
+
     @POST
     @Path("/comments")
     @Consumes("application/json")
-    @PermitAll
+    @RolesAllowed("USER")
     public Response postComment(Comment comment) {
 
         comment.setLikes(0);
-        phoneCatalog.addComment(comment);
+        comments.add(comment);
         return Response.status(201).entity(comment).build();
 
     }
@@ -37,7 +39,7 @@ public class ProductResource {
     @PermitAll
     public List<Comment> getComments(@PathParam("id")String id) {
 
-        List<Comment> ret = phoneCatalog.getComment(id);
+        List<Comment> ret = comments.getCommentsByPhoneId(id);
         return ret;
 
     }
@@ -49,7 +51,7 @@ public class ProductResource {
     @PermitAll
     public Comment incLike(@PathParam("id")int id) {
 
-        Comment ret = phoneCatalog.incLike(id);
+        Comment ret = comments.incLike(id);
         return ret;
 
     }
@@ -61,7 +63,7 @@ public class ProductResource {
     @RolesAllowed("ADMIN")
     public Comment deleteComment(@PathParam("id")int id) {
 
-        Comment ret = phoneCatalog.deleteComment(id);
+        Comment ret = comments.delete(id);
         return ret;
 
     }
