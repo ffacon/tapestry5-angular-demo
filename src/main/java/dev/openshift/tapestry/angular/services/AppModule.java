@@ -1,11 +1,8 @@
 package dev.openshift.tapestry.angular.services;
 
-import dev.openshift.tapestry.angular.ws.security.SecurityInterceptor;
 import org.apache.tapestry5.SymbolConstants;
-import org.apache.tapestry5.hibernate.HibernateSymbols;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.*;
-import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.LoggingAdvisor;
@@ -39,6 +36,7 @@ public class AppModule {
             pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
             pBinder.bind(UserDatabase.class, UserDatabaseImpl.class);
             pBinder.bind(UserDAO.class, UserDAOImpl.class);
+            pBinder.bind(CommentDAO.class, CommentDAOImpl.class);
 
 	 }
 	
