@@ -1,19 +1,15 @@
 package dev.openshift.tapestry.angular.services;
 
 import java.io.*;
-import java.util.ArrayList;
+
 import java.util.Hashtable;
 import java.util.List;
 
-
-import dev.openshift.tapestry.angular.data.Comment;
 import dev.openshift.tapestry.angular.data.Phone;
 import dev.openshift.tapestry.angular.data.PhoneDetails;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-
-
 
 
 public class PhoneCatalogImpl implements PhoneCatalog
@@ -27,19 +23,14 @@ public class PhoneCatalogImpl implements PhoneCatalog
 
     private Hashtable<String, String> hPhoneDetailsJSON;
 
-    private List<Comment> comments;
-
     private final String path = "dev/openshift/tapestry/angular/pages/phones/";
 
-    private int commentInc;
 
     public PhoneCatalogImpl() {
 
-        commentInc = 0;
 
         try {
 
-            comments = new ArrayList<Comment>();
 
             final String filePath = path + "phones.json";
             // read the json file
@@ -120,41 +111,5 @@ public class PhoneCatalogImpl implements PhoneCatalog
     }
 
 
-    public void addComment(Comment comment) {
-        comment.setId(commentInc++);
-        comments.add(comment);
-    }
 
-    public List<Comment> getComment(String phoneId) {
-        List<Comment> ret = new ArrayList<Comment>();
-        for(Comment c : comments)
-        {
-            if(c.getPhoneId().equals(phoneId)) ret.add(c);
-        }
-        return ret;
-    }
-
-    public  Comment incLike(int commentId) {
-
-            for(Comment c : comments)
-            {
-                if(c.getId() == commentId) {
-                    c.setLikes(c.getLikes()+1);
-                    return c;
-                }
-            }
-            return new Comment();
-        }
-
-    public  Comment deleteComment(int commentId) {
-
-        for(Comment c : comments)
-        {
-            if(c.getId() == commentId) {
-                comments.remove(c);
-                return c;
-            }
-        }
-        return new Comment();
-    }
 }
