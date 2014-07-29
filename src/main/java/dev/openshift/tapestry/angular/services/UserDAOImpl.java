@@ -1,6 +1,6 @@
 package dev.openshift.tapestry.angular.services;
 
-import dev.openshift.tapestry.angular.data.user.User;
+import dev.openshift.tapestry.angular.entity.User;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
