@@ -11,23 +11,16 @@ import java.util.StringTokenizer;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
-import dev.openshift.tapestry.angular.data.user.User;
+import dev.openshift.tapestry.angular.entity.User;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
-import org.jboss.resteasy.spi.Failure;
-import org.jboss.resteasy.spi.HttpRequest;
-import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
-import org.jboss.resteasy.spi.metadata.ResourceMethod;
 import org.jboss.resteasy.util.Base64;
 
 /**
