@@ -1,6 +1,6 @@
 package dev.openshift.tapestry.angular.ws.service;
 
-import dev.openshift.tapestry.angular.data.user.User;
+import dev.openshift.tapestry.angular.entity.User;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
