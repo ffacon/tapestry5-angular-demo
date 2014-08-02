@@ -1,9 +1,8 @@
 package dev.openshift.tapestry.angular.ws.service;
  
-import dev.openshift.tapestry.angular.data.user.Login;
 import dev.openshift.tapestry.angular.data.user.Token;
 import dev.openshift.tapestry.angular.services.UserDatabase;
-import dev.openshift.tapestry.angular.data.user.User;
+import dev.openshift.tapestry.angular.entity.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.util.Base64;
 
@@ -15,7 +14,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Date;
 import java.util.StringTokenizer;
 
 
