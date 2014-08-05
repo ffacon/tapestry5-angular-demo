@@ -16,6 +16,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
 import dev.openshift.tapestry.angular.entity.User;
+import dev.openshift.tapestry.angular.services.UserDAO;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.core.Headers;
@@ -37,7 +38,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
 	private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());;
 
     @Inject
-    UserDatabase userDatabase;
+    UserDAO userDatabase;
 
 	private boolean isUserAllowed(final String username, final String password,	final Set<String> rolesSet) 
 	{
