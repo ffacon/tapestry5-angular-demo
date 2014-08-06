@@ -1,6 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
  
 import dev.openshift.tapestry.angular.data.user.Token;
+import dev.openshift.tapestry.angular.services.UserDAO;
 import dev.openshift.tapestry.angular.services.UserDatabase;
 import dev.openshift.tapestry.angular.entity.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -24,25 +25,26 @@ public class UserService
     private static final String AUTHENTICATION_SCHEME = "Basic";
 
     @Inject
-    UserDatabase userDatabase;
+    UserDAO userDatabase;
+
 
     @GET
-    @Path("/users/{id}")
+    @Path("/users/{login}")
     @PermitAll
-    public Response getUserById(@PathParam("id") int id, @Context Request req)
+    public Response getUserByLogin(@PathParam("login") String login, @Context Request req)
     {
-        Response.ResponseBuilder rb = Response.ok(userDatabase.getUserById(id));
+        Response.ResponseBuilder rb = Response.ok(userDatabase.getUserByLogin(login));
         return rb.build();
     }
      
 
     @PUT
-    @Path("/users/{id}")
+    @Path("/users/{login}")
     @RolesAllowed("ADMIN")
-    public Response updateUserById(@PathParam("id") int id)
+    public Response updateUserById(@PathParam("login") String login)
     {
         //Update the User resource
-        userDatabase.updateUser(id);
+        User user=userDatabase.getUserByLogin(login);
         return Response.status(200).build();
     }
 
