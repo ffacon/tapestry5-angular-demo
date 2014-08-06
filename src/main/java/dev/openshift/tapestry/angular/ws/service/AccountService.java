@@ -1,7 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
 
 import dev.openshift.tapestry.angular.entity.User;
-import dev.openshift.tapestry.angular.services.UserDatabase;
+import dev.openshift.tapestry.angular.services.UserDAO;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import javax.annotation.security.PermitAll;
@@ -15,7 +15,7 @@ public class AccountService
 {
 
     @Inject
-    UserDatabase userDatabase;
+    UserDAO userDatabase;
 
 
     @POST
