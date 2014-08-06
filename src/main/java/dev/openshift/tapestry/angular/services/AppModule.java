@@ -34,7 +34,6 @@ public class AppModule {
             // This next line addresses an issue affecting GlassFish and JBoss - see http://blog.progs.be/?p=52
             javassist.runtime.Desc.useContextClassLoader = true;
             pBinder.bind(PhoneCatalog.class, PhoneCatalogImpl.class);
-            pBinder.bind(UserDatabase.class, UserDatabaseImpl.class);
             pBinder.bind(UserDAO.class, UserDAOImpl.class);
             pBinder.bind(CommentDAO.class, CommentDAOImpl.class);
 
