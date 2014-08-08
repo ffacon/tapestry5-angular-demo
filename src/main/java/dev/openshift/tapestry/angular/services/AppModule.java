@@ -113,8 +113,7 @@ public class AppModule {
 	 {
 	       
 	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "context:js/bower_components");
-	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.2.18");
-	        configuration.add(AngularSymbolConstants.ANGULAR_PAGES_SUBPACKAGE, "a");
+	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.2.20");
 	 }
 	    
 	 public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
