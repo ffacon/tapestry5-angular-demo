@@ -1,6 +1,7 @@
 'use strict';
 
 var httpHeaders;
+var baseUrl;
 
 var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute']).
   config(['$routeProvider','$httpProvider','USER_ROLES', function($routeProvider,$httpProvider,USER_ROLES) {
@@ -8,7 +9,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       when('/phones',
             {
                 templateUrl:function()
-                    {return window.location.origin + window.location.pathname + 'partials/phones.html';},
+                    {return baseUrl + 'partials/phones.html';},
                 controller: PhoneListCtrl,
                 access: {
                     authorizedRoles: [USER_ROLES.all]
@@ -17,7 +18,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       when('/login',
       {
           templateUrl:function()
-          {return window.location.origin + window.location.pathname + 'partials/login.html';},
+          {return baseUrl + 'partials/login.html';},
           controller: 'LoginCtrl',
           access: {
               authorizedRoles: [USER_ROLES.all]
@@ -26,7 +27,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       when('/phones/:phoneId',
             {
                 templateUrl:function()
-                    {return window.location.origin + window.location.pathname + 'partials/phone-details.html';},
+                    {return baseUrl + 'partials/phone-details.html';},
                 controller: 'PhoneDetailCtrl',
                 access: {
                     authorizedRoles: [USER_ROLES.all]
@@ -34,7 +35,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
             }).
       when('/logout', {
                 templateUrl:function()
-                    {return window.location.origin + window.location.pathname + 'partials/phones.html';},
+                    {return baseUrl + 'partials/phones.html';},
                 controller: 'LogoutController',
                 access: {
                     authorizedRoles: [USER_ROLES.all]
@@ -42,7 +43,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       }).
       when('/register', {
           templateUrl: function()
-          {return window.location.origin + window.location.pathname + 'partials/register.html';},
+          {return baseUrl + 'partials/register.html';},
           controller: 'RegisterController',
           access: {
               authorizedRoles: [USER_ROLES.all]
@@ -55,6 +56,7 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
       });
 
       httpHeaders = $httpProvider.defaults.headers;
+      baseUrl = window.location.origin + window.location.pathname;
     }])
 .config(['$httpProvider', function($httpProvider)
     {
