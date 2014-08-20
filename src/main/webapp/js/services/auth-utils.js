@@ -3,7 +3,7 @@
 
 phonecat.factory('Register', ['$resource',
     function ($resource) {
-        return $resource(window.location.origin + window.location.pathname +'api/app/account/register', {}, {
+        return $resource(baseUrl +'api/app/account/register', {}, {
         });
     }]);
 
@@ -16,7 +16,7 @@ phonecat.factory('Activate', ['$resource',
 
 phonecat.factory('Account', ['$resource',
     function ($resource) {
-        return $resource(window.location.origin + window.location.pathname +'api/app/user/account', {}, {
+        return $resource(baseUrl +'api/app/user/account', {}, {
         });
     }]);
 
@@ -172,7 +172,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
         return {
             login: function (param) {
                 var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
-                $http.post(window.location.origin + window.location.pathname +'api/app/user/authentication', data, {
+                $http.post(baseUrl +'api/app/user/authentication', data, {
                    headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
@@ -196,7 +196,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                     httpHeaders.common['Authorization'] =  AccessToken.get();
                 }
 
-                $http.get(window.location.origin + window.location.pathname +'api/app/user/validate', {
+                $http.get(baseUrl +'api/app/user/validate', {
                     ignoreAuthModule: 'ignoreAuthModule'
                 }).success(function (data, status, headers, config) {
                         if (!Session.login || AccessToken.get() != undefined) {
@@ -250,7 +250,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
 
                 AccessToken.remove();
 
-                $http.get(window.location.origin + window.location.pathname +'api/app/user/logout');
+                $http.get(baseUrl +'api/app/user/logout');
                 Session.invalidate();
                 delete httpHeaders.common['Authorization'];
                 authService.loginCancelled();
