@@ -1,9 +1,8 @@
-<html t:type="layoutStep7" t:pageTitle="step 8 - More Templating"
+<html t:type="layoutFinal" t:pageTitle="Demo"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" 
       xmlns:p="tapestry:parameter"
       xmlns:a="tapestry-library:angular">
-      
-      <!--  >a:ng_view t:name="phonecat"/-->
+
       <div ng-view="" ></div>
     
 </html>
