@@ -17,7 +17,6 @@ import javax.ws.rs.ext.Provider;
 
 import dev.openshift.tapestry.angular.entity.User;
 import dev.openshift.tapestry.angular.services.UserDAO;
-import dev.openshift.tapestry.angular.services.UserDatabase;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;

@@ -2,7 +2,6 @@ package dev.openshift.tapestry.angular.ws.service;
  
 import dev.openshift.tapestry.angular.data.user.Token;
 import dev.openshift.tapestry.angular.services.UserDAO;
-import dev.openshift.tapestry.angular.services.UserDatabase;
 import dev.openshift.tapestry.angular.entity.User;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.util.Base64;
