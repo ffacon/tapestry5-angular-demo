@@ -59,7 +59,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
 		return isAllowed;
 	}
 
-    @Override
+
     public void filter(ContainerRequestContext requestContext) throws IOException   {
 
         ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker)

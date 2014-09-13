@@ -4,7 +4,7 @@
 	<groupId>dev.openshift.tapestry</groupId>
 	<artifactId>tapestry5-angular-openshift</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>	
+	<version>0.0.2-SNAPSHOT</version>
 	<name>tapestry5 angular demo in Tapestry 5</name>
 	
 	<properties>
