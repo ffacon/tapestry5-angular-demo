@@ -138,15 +138,23 @@ resources, i.e. build is platform dependent! -->
                </plugin>
 
                 <plugin>
-                    <groupId>org.mortbay.jetty</groupId>
-                    <artifactId>maven-jetty-plugin</artifactId>
-                    <version>6.1.26</version>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.1.5.v20140505</version>
                     <configuration>
+                        <reload>automatic</reload>
+                        <scanIntervalSeconds>4</scanIntervalSeconds>
+                        <stopPort>9999</stopPort>
+                        <stopKey>key</stopKey>
+                        <useTestClasspath>true</useTestClasspath>
+                        <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+                        <systemProperty>
+                            <name>tapestry.execution-mode</name>
+                            <value>DevelopmentMode</value>
+                        </systemProperty>
                         <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
                             <append>true</append>
                         </requestLog>
-                        <useTestClasspath>true</useTestClasspath>
-                        <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
                     </configuration>
                 </plugin>
             </plugins>
