@@ -1,5 +1,7 @@
 package dev.openshift.tapestry.angular.services;
 
+import org.apache.shiro.realm.Realm;
+import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.*;
@@ -13,6 +15,8 @@ import dev.openshift.tapestry.angular.AngularSymbolConstants;
 import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 import org.slf4j.Logger;
 import org.tynamo.resteasy.ResteasySymbols;
+import org.tynamo.security.SecuritySymbols;
+import org.tynamo.shiro.extension.realm.text.ExtendedPropertiesRealm;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,
@@ -20,6 +24,10 @@ import org.tynamo.resteasy.ResteasySymbols;
  * service definitions.
  */
 public class AppModule {
+
+     public static final String URL_LOGIN = "/sec/Login";
+     public static final String URL_SUCCESS = "/Index";;
+     public static final String URL_UNAUTHORIZED = "/sec/AccessDenied";
 
 	/**
 	 * Make bind() calls on the binder object to define most IoC services. Use
@@ -88,7 +96,33 @@ public class AppModule {
             pConfiguration.add(ResteasySymbols.MAPPING_PREFIX, "/api");
 
 
+            pConfiguration.add(SymbolConstants.SECURE_ENABLED, "false");
+            pConfiguration.add(SymbolConstants.HOSTPORT, "8080");
+            pConfiguration.add(SymbolConstants.HOSTPORT_SECURE, "8443");
+
+            // Tynamo's tapestry-security module configuration
+            pConfiguration.add(SecuritySymbols.LOGIN_URL, URL_LOGIN);
+            pConfiguration.add(SecuritySymbols.SUCCESS_URL, URL_SUCCESS);
+            pConfiguration.add(SecuritySymbols.UNAUTHORIZED_URL, URL_UNAUTHORIZED);
+
+            pConfiguration.add(SymbolConstants.PRODUCTION_MODE,false);
+
 	 }
+
+    public static final String PERMISSION_ADMIN = "adminPermission:1";
+
+    // Security - Tynamo/Shiro
+    // http://tapestry.apache.org/https.html#HTTPS-SecuringMultiplePages
+    public void contributeMetaDataLocator(MappedConfiguration<String, String> configuration)
+    {
+        // Enabling @Secure only on some pages (the remaining ones are insecure)
+        configuration.add("admin:" + MetaDataConstants.SECURE_PAGE, "true");
+    }
+
+    public static void contributeWebSecurityManager(Configuration<Realm> configuration) {
+        ExtendedPropertiesRealm realm = new ExtendedPropertiesRealm("classpath:shiro-users.properties");
+        configuration.add(realm);
+    }
 
 	/**
 	 * @param pConfiguration
