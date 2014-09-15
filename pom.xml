@@ -97,6 +97,12 @@ resources, i.e. build is platform dependent! -->
 		</dependency>
 
         <dependency>
+           <groupId>org.tynamo</groupId>
+           <artifactId>tapestry-security</artifactId>
+           <version>0.5.1</version>
+       </dependency>
+
+        <dependency>
             <groupId>org.tynamo</groupId>
             <artifactId>tapestry-resteasy</artifactId>
             <version>0.3.2</version>
