@@ -16,3 +16,6 @@ target/
 node_modules/
 db/phonecat.log
 db/phonecat.lck
+.settings/
+.classpath
+.project
