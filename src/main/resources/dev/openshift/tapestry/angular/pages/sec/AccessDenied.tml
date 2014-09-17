@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html t:type="T5Layout" t:pageTitle="Access Denied"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+  <div id="error">
+    <p>
+      You are not allowed to access or perform an action on the requested page.
+      <br/>
+      Please contact your system administrator for further information!
+    </p>
+    <div class="alert alert-warning" >
+        You are not logged on! Go <a href="${loginLink}">back to the application</a>
+    </div>
+  </div>
+</html>
