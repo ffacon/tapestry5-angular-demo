@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html t:type="T5Layout" t:pageTitle="Admin/Index"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <div class="container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1 >Hello ${principal}, you have admin right</h1>
+
+            <div class="alert alert-warning" >
+                <t:actionlink t:id="link">logout</t:actionlink>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+</html>
