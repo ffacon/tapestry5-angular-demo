@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html t:type="T5Layout" t:pageTitle="Log out"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+
+<p>Log out</p>
+
+</html>
