@@ -152,15 +152,12 @@ resources, i.e. build is platform dependent! -->
                         <scanIntervalSeconds>4</scanIntervalSeconds>
                         <stopPort>9999</stopPort>
                         <stopKey>key</stopKey>
-                        <useTestClasspath>true</useTestClasspath>
-                        <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
-                        <systemProperty>
-                            <name>tapestry.execution-mode</name>
-                            <value>DevelopmentMode</value>
-                        </systemProperty>
-                        <requestLog implementation="org.mortbay.jetty.NCSARequestLog">
-                            <append>true</append>
-                        </requestLog>
+                        <systemProperties>
+                            <systemProperty>
+                                <name>tapestry.execution-mode</name>
+                                <value>DevelopmentMode</value>
+                            </systemProperty>
+                        </systemProperties>
                     </configuration>
                 </plugin>
             </plugins>
