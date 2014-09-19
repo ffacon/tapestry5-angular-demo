@@ -5,9 +5,11 @@ import org.apache.tapestry5.MetaDataConstants;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.hibernate.HibernateTransactionDecorator;
 import org.apache.tapestry5.ioc.*;
+import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Match;
 import org.apache.tapestry5.ioc.services.ClasspathURLConverter;
 import org.apache.tapestry5.ioc.services.LoggingAdvisor;
+import org.apache.tapestry5.services.HttpServletRequestFilter;
 import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import dev.openshift.tapestry.angular.AngularSymbolConstants;
@@ -171,5 +173,13 @@ public class AppModule {
                                                 T delegate, ServiceResources resources)
      {
         return decorator.build(serviceInterface, delegate, resources.getServiceId());
+     }
+
+     //http://apache-tapestry-mailing-list-archives.1045711.n5.nabble.com/Tapestry-Tynamo-Rest-and-security-integration-questions-td5714525.html
+     public static void contributeHttpServletRequestHandler(
+            @InjectService("SecurityConfiguration") HttpServletRequestFilter securityConfiguration,
+            OrderedConfiguration<HttpServletRequestFilter> filters)
+     {
+        filters.override("SecurityConfiguration", securityConfiguration, "before:ResteasyRequestFilter,after:StoreIntoGlobals");
      }
 }
