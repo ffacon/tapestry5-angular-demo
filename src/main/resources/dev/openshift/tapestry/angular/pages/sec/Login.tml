@@ -1,0 +1,41 @@
+<html t:type="T5Layout" t:pageTitle="Login"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" 
+      xmlns:p="tapestry:parameter">
+
+<div>
+    <div class="container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1 >Authentication</h1>
+
+            <form t:type="form" t:id="loginForm" class="form" role="form">
+                <div class="alert alert-danger" ng-show="authenticationError" >
+                    <t:errors/>
+                </div>
+                <div class="form-group">
+                    <label for="username">Login</label>
+                    <input class="form-control"  t:type="TextField" t:id="username" t:validate="required,minlength=3" size="30"/>
+
+                </div>
+                <div class="form-group">
+                    <label for="password" >Password</label>
+                    <input t:type="PasswordField" t:id="password" t:validate="required,minlength=3" size="30"/>
+                </div>
+                <!--div class="form-group">
+                    <label for="rememberMe">
+                        {{"login.form.rememberme"}}
+                        <input type="checkbox" class="checkbox inline_class" id="rememberMe" checked/>
+                    </label>
+                </div-->
+                <button type="submit" class="btn btn-primary" >Authenticate</button>
+            </form>
+            <p></p>
+            <div class="alert alert-warning" >
+                You don't have an account yet? <a href="#/register">Register a new account</a>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+</html>
