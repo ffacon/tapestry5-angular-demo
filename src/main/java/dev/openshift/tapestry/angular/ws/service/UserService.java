@@ -3,8 +3,13 @@ package dev.openshift.tapestry.angular.ws.service;
 import dev.openshift.tapestry.angular.data.user.Token;
 import dev.openshift.tapestry.angular.services.UserDAO;
 import dev.openshift.tapestry.angular.entity.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.jboss.resteasy.util.Base64;
+import org.slf4j.Logger;
+import org.tynamo.security.services.SecurityService;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -14,7 +19,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 @Path("/app/user")
@@ -24,7 +29,13 @@ public class UserService
     private static final String AUTHENTICATION_SCHEME = "Basic";
 
     @Inject
-    UserDAO userDatabase;
+    private UserDAO userDatabase;
+
+    @Inject
+    private SecurityService securityService;
+
+    @Inject
+    private Logger LOG;
 
 
     @GET
@@ -36,6 +47,7 @@ public class UserService
         return rb.build();
     }
      
+
 
     @PUT
     @Path("/users/{login}")
@@ -52,8 +64,17 @@ public class UserService
     @PermitAll
     public Response validate( @Context Request req)
     {
-        Response.ResponseBuilder rb = Response.ok();
-        return rb.build();
+        Subject subject;
+        try {
+            subject = securityService.getSubject();
+            if (subject.isAuthenticated()) {
+                return Response.ok().build();
+            }
+        }
+        catch (Exception e) {
+            LOG.debug("User failed to log.");
+        }
+        return Response.status(Response.Status.BAD_REQUEST).entity("not Authenticated").build();
     }
 
     @POST
@@ -62,20 +83,39 @@ public class UserService
     @PermitAll
     public Response postLogin(@FormParam("j_username") String username,@FormParam("j_password") String password) {
         Response.ResponseBuilder rb;
-        User user = userDatabase.getUserByLogin(username);
-        if(user != null && user.getPassword().equals(password)){
-            String userPassword= username + ":" + password;
-            String basicAuth = new String(Base64.encodeBytes(userPassword.getBytes()));
-            Token token = new Token();
-            token.setAccess_token("Basic "+basicAuth);
-            token.setExpires_in(1799);
-            token.setToken_type("bearer");
-            token.setScope("read write");
-            rb = Response.ok(token);
-            return rb.build();
-        }else{
-            return Response.status(Response.Status.BAD_REQUEST).entity("invalid login or password").build();
+
+        Subject subject;
+        try {
+            subject = securityService.getSubject();
+            if (!subject.isAuthenticated()) {
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                subject.login(token);
+                token.clear();
+                String userPassword= username + ":" + password;
+                String basicAuth = new String(Base64.encodeBytes(userPassword.getBytes()));
+                Token cltToken = new Token();
+                cltToken.setAccess_token("Basic "+basicAuth);
+                cltToken.setExpires_in(1799);
+                cltToken.setToken_type("bearer");
+                cltToken.setScope("read write");
+                rb = Response.ok(cltToken);
+                //rb = Response.ok();
+                return rb.build();
+
+            } else {
+                LOG.debug("User [" + subject.getPrincipal() + "] already authenticated.");
+                if(subject.getPrincipal().toString().equals(username))
+                {
+                    rb = Response.ok();
+                    return rb.build();
+                }
+            }
+        } catch (Exception e) {
+            LOG.debug("User failed to log.");
         }
+
+        return Response.status(Response.Status.BAD_REQUEST).entity("invalid login or password").build();
+
     }
 
 
@@ -103,14 +143,31 @@ public class UserService
         final String username = tokenizer.nextToken();
         final String password = tokenizer.nextToken();
 
-        User user = userDatabase.getUserByLogin(username);
-        if(user != null && user.getPassword().equals(password)){
+        Subject subject;
+        try {
 
+            subject = securityService.getSubject();
+            if (!subject.isAuthenticated()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("not authenticated").build();
+            }
+            String userNameFromSubject = subject.getPrincipal().toString();
+            if(!userNameFromSubject.equals(username)){
+                return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
+            }
+
+            User user = new User();
+            user.setLogin(subject.getPrincipal().toString());
+            List<String> roles =  new ArrayList<String>() ;
+            roles.add("*");
+            user.setRoles(roles);
             Response.ResponseBuilder rb = Response.ok(user);
             return rb.build();
-        }else{
+        } catch (Exception e) {
+            LOG.debug("User  failed to log.");
             return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
+
         }
+
     }
 
     @GET
@@ -118,6 +175,7 @@ public class UserService
     @PermitAll
     public Response logout( @Context Request req)
     {
+        securityService.getSubject().logout();
         Response.ResponseBuilder rb = Response.ok();
         return rb.build();
     }
