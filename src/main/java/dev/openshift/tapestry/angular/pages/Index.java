@@ -45,7 +45,7 @@ import org.apache.tapestry5.services.Response;
                 "context:js/services/auth-utils.js",
                 "context:js/services/CommentService.js",
                 "context:js/controllers/controllers-index.js"})
-@Events({ "partial","phones","phoneDetails"})
+@Events({ "phones","phoneDetails"})
 public class Index
 {
 
