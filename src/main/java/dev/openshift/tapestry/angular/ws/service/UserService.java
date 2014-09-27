@@ -1,5 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
- 
+
+import dev.openshift.tapestry.angular.data.user.RoleConsts;
+import dev.openshift.tapestry.angular.data.user.RoleEnum;
 import dev.openshift.tapestry.angular.data.user.Token;
 import dev.openshift.tapestry.angular.services.UserDAO;
 import dev.openshift.tapestry.angular.entity.User;
@@ -51,7 +53,7 @@ public class UserService
 
     @PUT
     @Path("/users/{login}")
-    @RolesAllowed("ADMIN")
+    @RolesAllowed(RoleConsts.ADMIN_ROLE)
     public Response updateUserById(@PathParam("login") String login)
     {
         //Update the User resource
@@ -99,7 +101,6 @@ public class UserService
                 cltToken.setToken_type("bearer");
                 cltToken.setScope("read write");
                 rb = Response.ok(cltToken);
-                //rb = Response.ok();
                 return rb.build();
 
             } else {
@@ -156,9 +157,15 @@ public class UserService
             }
 
             User user = new User();
-            user.setLogin(subject.getPrincipal().toString());
+            user.setLogin(userNameFromSubject);
             List<String> roles =  new ArrayList<String>() ;
-            roles.add("*");
+            for (RoleEnum r: RoleEnum.values())
+            {
+                if(subject.hasRole(r.getRole()))
+                {
+                    roles.add(r.getRole());
+                }
+            }
             user.setRoles(roles);
             Response.ResponseBuilder rb = Response.ok(user);
             return rb.build();
