@@ -1,5 +1,7 @@
 package dev.openshift.tapestry.angular.ws.service;
 
+import dev.openshift.tapestry.angular.data.user.RoleConsts;
+import dev.openshift.tapestry.angular.data.user.RoleEnum;
 import dev.openshift.tapestry.angular.entity.Comment;
 import dev.openshift.tapestry.angular.services.CommentDAO;
 import dev.openshift.tapestry.angular.services.PhoneCatalog;
@@ -23,7 +25,7 @@ public class ProductResource {
     @POST
     @Path("/comments")
     @Consumes("application/json")
-    @RolesAllowed("USER")
+    @RolesAllowed(RoleConsts.USER_ROLE)
     public Response postComment(Comment comment) {
 
         comment.setLikes(0);
@@ -60,7 +62,7 @@ public class ProductResource {
     @DELETE
     @Path("/comments/{id}")
     @Consumes("application/json")
-    @RolesAllowed("ADMIN")
+    @RolesAllowed(RoleConsts.ADMIN_ROLE)
     public Comment deleteComment(@PathParam("id")int id) {
 
         Comment ret = comments.delete(id);
