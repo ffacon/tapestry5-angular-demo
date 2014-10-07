@@ -6,6 +6,7 @@
     "json3": "3.3.0",
     "angular-route": "1.2.20",
     "angular-resource": "1.2.20",
+    "angular-cookies": "1.2.20",
     "angular-translate": "2.0.0",
     "angular-translate-storage-cookie": "2.0.0",
     "angular-translate-loader-static-files": "2.0.0",
