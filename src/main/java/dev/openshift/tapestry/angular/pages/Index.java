@@ -40,6 +40,10 @@ import org.apache.tapestry5.services.Response;
 
 @Import(stylesheet={"context:/css/phonecat/app.css","context:/css/phonecat/bootstrap.css"},
 		library={
+                "context:js/bower_components/angular-cookies/angular-cookies.js",
+                "context:js/bower_components/angular-translate/angular-translate.js",
+                "context:js/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js",
+                "context:js/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
                 "context:js/index.js",
                 "context:js/services/http-auth-interceptor.js",
                 "context:js/services/auth-utils.js",
