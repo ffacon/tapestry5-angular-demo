@@ -3,8 +3,8 @@
 var httpHeaders;
 var baseUrl;
 
-var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute']).
-  config(['$routeProvider','$httpProvider','USER_ROLES', function($routeProvider,$httpProvider,USER_ROLES) {
+var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute','pascalprecht.translate','ngCookies']).
+  config(['$routeProvider','$httpProvider','USER_ROLES','$translateProvider', function($routeProvider,$httpProvider,USER_ROLES,$translateProvider) {
   $routeProvider.
       when('/phones',
             {
@@ -57,6 +57,15 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
 
       httpHeaders = $httpProvider.defaults.headers;
       baseUrl = window.location.origin + window.location.pathname;
+
+      $translateProvider.useStaticFilesLoader({
+            prefix: 'i18n/',
+            suffix: '.json'
+      });
+
+      $translateProvider.preferredLanguage('fr');
+
+      $translateProvider.useCookieStorage();
     }])
 .config(['$httpProvider', function($httpProvider)
     {
