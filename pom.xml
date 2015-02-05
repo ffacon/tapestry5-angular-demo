@@ -4,11 +4,11 @@
 	<groupId>dev.openshift.tapestry</groupId>
 	<artifactId>tapestry5-angular-openshift</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>tapestry5 angular demo in Tapestry 5</name>
 	
 	<properties>
-		<tapestry-release-version>5.3.7</tapestry-release-version>
+		<tapestry-release-version>5.3.8</tapestry-release-version>
 		<hibernate-framework-version>3.6.10.Final</hibernate-framework-version>
 		<slf4j-version>1.7.2</slf4j-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
