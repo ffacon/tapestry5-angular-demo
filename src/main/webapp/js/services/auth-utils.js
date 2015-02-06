@@ -167,12 +167,12 @@ phonecat.constant('USER_ROLES', {
     user: 'USER'
 });
 
-phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authService', 'Session', 'Account','AccessToken',
-    function ($rootScope, $http, authService, Session, Account,AccessToken) {
+phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http',  'Session', 'Account','AccessToken',
+    function ($rootScope, $http,  Session, Account,AccessToken) {
         return {
             login: function (param) {
                 var data ="j_username=" + param.username +"&j_password=" + param.password +"&_spring_security_remember_me=" + param.rememberMe +"&submit=Login";
-                $http.post(baseUrl +'api/app/user/authentication', data, {
+                return $http.post(baseUrl +'api/app/user/authentication', data, {
                    headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
@@ -184,7 +184,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                         Account.get(function(data) {
                             Session.create(data.login, data.firstName, data.lastName, data.email, data.roles);
                             $rootScope.account = Session;
-                            authService.loginConfirmed(data);
+
                         });
                     }).error(function (data, status, headers, config) {
                         $rootScope.authenticationError = true;
@@ -235,7 +235,6 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                 angular.forEach(authorizedRoles, function(authorizedRole) {
                     var authorized = (!!Session.login &&
                         Session.userRoles.indexOf(authorizedRole) !== -1);
-
                     if (authorized || authorizedRole == '*') {
                         isAuthorized = true;
                     }
@@ -253,7 +252,7 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http', 'authSer
                 $http.get(baseUrl +'api/app/user/logout');
                 Session.invalidate();
                 delete httpHeaders.common['Authorization'];
-                authService.loginCancelled();
+
             }
         };
     }]);

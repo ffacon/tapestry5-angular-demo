@@ -3,14 +3,14 @@
 var httpHeaders;
 var baseUrl;
 
-var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource','ngRoute','pascalprecht.translate','ngCookies']).
+var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.translate','ngCookies']).
   config(['$routeProvider','$httpProvider','USER_ROLES','$translateProvider', function($routeProvider,$httpProvider,USER_ROLES,$translateProvider) {
   $routeProvider.
       when('/phones',
             {
                 templateUrl:function()
                     {return baseUrl + 'partials/phones.html';},
-                controller: PhoneListCtrl,
+                controller: 'PhoneListCtrl',
                 access: {
                     authorizedRoles: [USER_ROLES.all]
                 }
@@ -50,6 +50,9 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
           }
       }).
       otherwise({redirectTo: '/phones',
+          templateUrl:function()
+          {return baseUrl + 'partials/phones.html';},
+          controller: 'PhoneListCtrl',
                 access: {
                     authorizedRoles: [USER_ROLES.all]
                 }
@@ -73,20 +76,16 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
     //see https://github.com/angular/angular.js/issues/1004
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }])
-.run(['$rootScope', '$location', '$http', 'AuthenticationSharedService', 'Session', 'USER_ROLES',
+.run(['$rootScope', '$location', '$http', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
         function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
             $rootScope.$on('$routeChangeStart', function (event, next) {
                 $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                 $rootScope.userRoles = USER_ROLES;
-                AuthenticationSharedService.valid(next.access.authorizedRoles);
-            });
-
-            // Call when the the client is confirmed
-            $rootScope.$on('event:auth-loginConfirmed', function(data) {
-                $rootScope.authenticated = true;
-                if ($location.path() === "/login") {
-                    $location.path('/').replace();
+                if( !$rootScope.isAuthorized( next.access.authorizedRoles) )
+                {
+                    $location.path('/login');
                 }
+
             });
 
             // Call when the 401 response is returned by the server
@@ -99,15 +98,5 @@ var phonecat = angular.module('phonecat', ['http-auth-interceptor','ngResource',
                 }
             });
 
-            // Call when the 403 response is returned by the server
-            $rootScope.$on('event:auth-notAuthorized', function(rejection) {
-                $rootScope.errorMessage = 'errors.403';
-                $location.path('/error').replace();
-            });
-
-            // Call when the user logs out
-            $rootScope.$on('event:auth-loginCancelled', function() {
-                $location.path('');
-            });
         }]);;
 

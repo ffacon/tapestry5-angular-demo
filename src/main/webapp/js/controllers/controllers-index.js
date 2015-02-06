@@ -1,22 +1,18 @@
 'use strict';
 
 /* Controllers */
+angular.module('phonecat')
+    .controller('PhoneListCtrl', ['$location','$scope', '$http', '$log', 'Session','AuthenticationSharedService',
+        function ($location,$scope, $http, $log, Session, AuthenticationSharedService )
+        {
+            $http.get('./Index:phones').success(function(data) {$scope.phones = data;});
+            $scope.logout = function() {
+                AuthenticationSharedService.logout();
+            };
+            $scope.orderProp = 'age';
+            $scope.login = Session.login;
 
-function PhoneListCtrl($scope, $http,AuthenticationSharedService,Session) {
-  $http.get('./Index:phones').success(function(data) {
-    $scope.phones = data;
-
-    });
-
-  $scope.logout = function() {
-        AuthenticationSharedService.logout();
-  };
-
-  $scope.orderProp = 'age';
-  $scope.login = Session.login;
-};
-
-PhoneListCtrl.$inject = ['$scope', '$http','AuthenticationSharedService','Session'];
+}]);
 
 
 angular.module('phonecat')
@@ -69,15 +65,22 @@ angular.module('phonecat')
         }
     }]);
 
-phonecat.controller('LoginCtrl', ['$scope', '$location', 'AuthenticationSharedService',
-    function ($scope, $location, AuthenticationSharedService) {
+phonecat.controller('LoginCtrl', [ '$rootScope','$scope', '$location','AuthenticationSharedService',
+    function ( $rootScope,$scope, $location,AuthenticationSharedService)  {
         $scope.rememberMe = true;
         $scope.login = function () {
             AuthenticationSharedService.login({
                 username: $scope.username,
                 password: $scope.password,
                 rememberMe: $scope.rememberMe
-            })
+            }).then(function () {
+                $scope.authenticationError = false;
+                $rootScope.authenticated = true;
+                $location.path("/");
+            }).catch(function () {
+                $scope.authenticationError = true;
+                $rootScope.authenticated = false;
+            });
         }
     }]);
 
