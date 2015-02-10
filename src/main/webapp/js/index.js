@@ -75,6 +75,34 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
     //add header to allow tapestry to serve data
     //see https://github.com/angular/angular.js/issues/1004
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    $httpProvider.interceptors.push(function($rootScope,$q){
+        //see http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/
+        //see http://onehungrymind.com/winning-http-interceptors-angularjs/
+        return {
+            request : function(config) {
+                return config;
+            },
+
+            response: function (response) {
+                if (response.status === 403 || response.status === 401) {
+                    // insert code to redirect to custom unauthorized page
+
+                }
+                return response || $q.when(response);
+            },
+
+            responseError : function(response) {
+                if(response.status ===undefined) {
+                    //watch out error message could be parse error message from ngresource
+                    $rootScope.$broadcast('responseError',response.message);
+                };
+                if (response.status === 401) {
+                    $rootScope.$broadcast('unauthorized');
+                }
+                return $q.reject(response);
+            }
+    }});
+
     }])
 .run(['$rootScope', '$location', '$http', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
         function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
@@ -89,13 +117,8 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
             });
 
             // Call when the 401 response is returned by the server
-            $rootScope.$on('event:auth-loginRequired', function(rejection) {
-                Session.invalidate();
-                $rootScope.authenticated = false;
-                if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register" &&
-                    $location.path() !== "/activate") {
-                    $location.path('/login').replace();
-                }
+            $rootScope.$on('unauthorized', function() {
+               $location.path('/login');
             });
 
         }]);;
