@@ -9,6 +9,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONObject;
 import org.jboss.resteasy.util.Base64;
 import org.slf4j.Logger;
 import org.tynamo.security.services.SecurityService;
@@ -76,7 +77,9 @@ public class UserService
         catch (Exception e) {
             LOG.debug("User failed to log.");
         }
-        return Response.status(Response.Status.BAD_REQUEST).entity("not Authenticated").build();
+        JSONObject JSONEntity = new JSONObject();
+        JSONEntity.put("message","not Authenticated");
+        return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
     }
 
     @POST
@@ -114,8 +117,9 @@ public class UserService
         } catch (Exception e) {
             LOG.debug("User failed to log.");
         }
-
-        return Response.status(Response.Status.BAD_REQUEST).entity("invalid login or password").build();
+        JSONObject JSONEntity = new JSONObject();
+        JSONEntity.put("message","invalid user or password");
+        return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
 
     }
 
@@ -131,12 +135,14 @@ public class UserService
         //Get encoded username and password
         final String encodedUserPassword = auth.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
+        JSONObject JSONEntity = new JSONObject();
         //Decode username and password
         String usernameAndPassword;
         try {
             usernameAndPassword = new String(Base64.decode(encodedUserPassword));
         } catch (IOException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("invalid token").build();
+            JSONEntity.put("message","invalid token");
+            return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
         }
 
         //Split username and password tokens
@@ -144,16 +150,20 @@ public class UserService
         final String username = tokenizer.nextToken();
         final String password = tokenizer.nextToken();
 
+
+
         Subject subject;
         try {
 
             subject = securityService.getSubject();
             if (!subject.isAuthenticated()) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("not authenticated").build();
+                JSONEntity.put("message","not authenticated");
+                return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
             }
             String userNameFromSubject = subject.getPrincipal().toString();
             if(!userNameFromSubject.equals(username)){
-                return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
+                JSONEntity.put("message","invalid user or password");
+                return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
             }
 
             User user = new User();
@@ -171,7 +181,8 @@ public class UserService
             return rb.build();
         } catch (Exception e) {
             LOG.debug("User  failed to log.");
-            return Response.status(Response.Status.BAD_REQUEST).entity("invalid user or password").build();
+            JSONEntity.put("message","invalid user or password");
+            return Response.status(Response.Status.BAD_REQUEST).entity(JSONEntity.toString()).build();
 
         }
 
