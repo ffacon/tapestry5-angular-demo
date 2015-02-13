@@ -45,7 +45,6 @@ import org.apache.tapestry5.services.Response;
                 "context:js/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js",
                 "context:js/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
                 "context:js/index.js",
-                "context:js/services/http-auth-interceptor.js",
                 "context:js/services/auth-utils.js",
                 "context:js/services/CommentService.js",
                 "context:js/controllers/controllers-index.js"})
