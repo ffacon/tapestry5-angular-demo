@@ -149,7 +149,7 @@ public class AppModule {
 	 {
 	       
 	        configuration.add(AngularSymbolConstants.ANGULAR_CORE_PATH, "context:js/bower_components");
-	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.2.20");
+	        configuration.add(AngularSymbolConstants.ANGULAR_VERSION, "1.3.9");
 	 }
 	    
 	 public static void contributeClasspathAssetAliasManager(MappedConfiguration<String, String> configuration)
