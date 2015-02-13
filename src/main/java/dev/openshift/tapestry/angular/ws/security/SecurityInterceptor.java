@@ -18,6 +18,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.json.JSONObject;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
@@ -33,9 +34,13 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
 {
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final String AUTHENTICATION_SCHEME = "Basic";
-	private static final ServerResponse ACCESS_DENIED = new ServerResponse("Access denied for this resource", 401, new Headers<Object>());;
-	private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());;
-	private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());;
+    //ngResource request a valid JSONObject otherwise $http.interceptor  failed due a parse error
+    private static final JSONObject AccessDeniedMessage = new JSONObject().put("message","Access denied for this resource");
+	private static final ServerResponse ACCESS_DENIED = new ServerResponse(AccessDeniedMessage.toString(), 401, new Headers<Object>());;
+    private static final JSONObject AccessForbiddenMessage = new JSONObject().put("message","Nobody can access this resource");
+    private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse(AccessForbiddenMessage.toString(), 403, new Headers<Object>());;
+    private static final JSONObject ServerErrorMessage = new JSONObject().put("message","INTERNAL SERVER ERROR");
+    private static final ServerResponse SERVER_ERROR = new ServerResponse(ServerErrorMessage.toString(), 500, new Headers<Object>());;
 
     @Inject
     private SecurityService securityService;
