@@ -37,9 +37,13 @@ angular.module('phonecat')
 
         /** Delete a comment. */
         $scope.deleteComment = function(comment) {
-            comment.$delete(comment.id,function(){
+            comment.$delete(comment.id).then(function() {
                 $scope.comments.splice($scope.comments.indexOf(comment),1);
+            }).catch(function() {
+                $scope.error = 'ERROR';
             });
+
+
 
         };
 
