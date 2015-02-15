@@ -16,14 +16,14 @@ angular.module('phonecat')
 
 
 angular.module('phonecat')
-    .controller('PhoneDetailCtrl', ['$scope','$rootScope', '$routeParams', '$http','CommentService',
-        function ($scope,$rootScope, $routeParams, $http,CommentService) {
+    .controller('PhoneDetailCtrl', ['$scope','$rootScope', '$stateParams', '$http','CommentService',
+        function ($scope,$rootScope, $stateParams, $http,CommentService) {
 
-        $http.get('./Index:phoneDetails/' + $routeParams.phoneId ).success(function(data) {
+        $http.get('./Index:phoneDetails/' + $stateParams.phoneId ).success(function(data) {
             $scope.phone = data;
         });
 
-        $scope.comments = CommentService.query({id:$routeParams.phoneId});
+        $scope.comments = CommentService.query({id:$stateParams.phoneId});
 
         /** Creates a new comment. */
 
@@ -51,7 +51,7 @@ angular.module('phonecat')
         $scope.addComment = function() {
             if($rootScope.account != null)
                 $scope.addedComment.author = $rootScope.account.login;
-            $scope.addedComment.phoneId = $routeParams.phoneId;
+            $scope.addedComment.phoneId = $stateParams.phoneId;
             $scope.addedComment.$save(function(){
 
                 $scope.comments.push($scope.addedComment);
