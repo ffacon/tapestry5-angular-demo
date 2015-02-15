@@ -3,11 +3,12 @@
 var httpHeaders;
 var baseUrl;
 
-var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.translate','ngCookies']).
-  config(['$routeProvider','$httpProvider','USER_ROLES','$translateProvider', function($routeProvider,$httpProvider,USER_ROLES,$translateProvider) {
-  $routeProvider.
-      when('/phones',
+var phonecat = angular.module('phonecat', ['ngResource','ui.router','pascalprecht.translate','ngCookies']).
+  config(['$stateProvider','$urlRouterProvider','$httpProvider','USER_ROLES','$translateProvider', function($stateProvider,$urlRouterProvider,$httpProvider,USER_ROLES,$translateProvider) {
+  $stateProvider.
+      state('phones',
             {
+                url: '/phones',
                 templateUrl:function()
                     {return baseUrl + 'partials/phones.html';},
                 controller: 'PhoneListCtrl',
@@ -15,8 +16,9 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
                     authorizedRoles: [USER_ROLES.all]
                 }
             }).
-      when('/login',
+      state('login',
       {
+          url: '/login',
           templateUrl:function()
           {return baseUrl + 'partials/login.html';},
           controller: 'LoginCtrl',
@@ -24,8 +26,9 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
               authorizedRoles: [USER_ROLES.all]
           }
       }).
-      when('/phones/:phoneId',
+      state('phonesDetail',
             {
+                url: '/phones/:phoneId',
                 templateUrl:function()
                     {return baseUrl + 'partials/phone-details.html';},
                 controller: 'PhoneDetailCtrl',
@@ -33,7 +36,8 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
                     authorizedRoles: [USER_ROLES.all]
                 }
             }).
-      when('/logout', {
+      state('logout', {
+                url : '/logout',
                 templateUrl:function()
                     {return baseUrl + 'partials/phones.html';},
                 controller: 'LogoutController',
@@ -41,22 +45,17 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
                     authorizedRoles: [USER_ROLES.all]
                 }
       }).
-      when('/register', {
+      state('register', {
+          url: '/register',
           templateUrl: function()
           {return baseUrl + 'partials/register.html';},
           controller: 'RegisterController',
           access: {
               authorizedRoles: [USER_ROLES.all]
           }
-      }).
-      otherwise({redirectTo: '/phones',
-          templateUrl:function()
-          {return baseUrl + 'partials/phones.html';},
-          controller: 'PhoneListCtrl',
-                access: {
-                    authorizedRoles: [USER_ROLES.all]
-                }
       });
+
+      $urlRouterProvider.otherwise('/phones');
 
       httpHeaders = $httpProvider.defaults.headers;
       baseUrl = window.location.origin + window.location.pathname;
@@ -104,21 +103,21 @@ var phonecat = angular.module('phonecat', ['ngResource','ngRoute','pascalprecht.
     }});
 
     }])
-.run(['$rootScope', '$location', '$http', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
-        function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
-            $rootScope.$on('$routeChangeStart', function (event, next) {
+.run(['$rootScope', '$location', '$http','$state', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
+        function($rootScope, $location, $http,$state, AuthenticationSharedService, Session, USER_ROLES) {
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                 $rootScope.userRoles = USER_ROLES;
-                if( !$rootScope.isAuthorized( next.access.authorizedRoles) )
+                if( !$rootScope.isAuthorized( toState.access.authorizedRoles) )
                 {
-                    $location.path('/login');
+                    $state.go('login');
                 }
 
             });
 
             // Call when the 401 response is returned by the server
             $rootScope.$on('unauthorized', function() {
-               $location.path('/login');
+                $state.go('login');
             });
 
         }]);;
