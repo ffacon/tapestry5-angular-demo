@@ -3,6 +3,6 @@
       xmlns:p="tapestry:parameter"
       xmlns:a="tapestry-library:angular">
 
-      <div ng-view="" ></div>
+      <div ui-view="" ></div>
     
 </html>
