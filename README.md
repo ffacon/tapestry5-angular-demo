@@ -13,13 +13,14 @@ For Security, this application uses JAX-RS Interceptor (see SecurityInterceptor.
 
 see this demo in action at [http://tapestryangular-frafac.rhcloud.com/#/phones](http://tapestryangular-frafac.rhcloud.com/#/phones)
 
-or use mvn jetty:run and hit  [http://localhost:8080/tapestry5-angular-openshift/#/phones](http://localhost:8080/tapestry5-angular-openshift/#/phones)
+or use mvn jetty:run and hit  [http://localhost:8080/#/phones](http://localhost:8080/#/phones)
 
 see also official AngularJS tutorial  [https://docs.angularjs.org/tutorial/step_00](https://docs.angularjs.org/tutorial/step_00)
 
 # Changelog 
 
-* 0.4 : Update to Tapestry 5.3.8 (Java 1.8) and AngularJS 1.3.9
+* 1.0.0 : [Use angular-ui-router instead of angular-route #2](https://github.com/ffacon/tapestry5-angular-demo/issues/2)
+* 0.4 : update to Tapestry 5.3.8 (Java 1.8) and AngularJS 1.3.9
 * 0.3 : add Shiro thanks to tapestry-security 
 * 0.2 : add RESTEasy thanks to Tapestry-RESTEasy
-* 0.1 : Basic version
+* 0.1 : basic version
