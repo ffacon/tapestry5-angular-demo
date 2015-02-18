@@ -14,7 +14,6 @@ import org.apache.tapestry5.services.LibraryMapping;
 import org.apache.tapestry5.services.javascript.JavaScriptStack;
 import dev.openshift.tapestry.angular.AngularSymbolConstants;
 
-import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 import org.slf4j.Logger;
 import org.tynamo.resteasy.ResteasySymbols;
 import org.tynamo.security.SecuritySymbols;
@@ -28,7 +27,7 @@ import org.tynamo.shiro.extension.realm.text.ExtendedPropertiesRealm;
 public class AppModule {
 
      public static final String URL_LOGIN = "/sec/Login";
-     public static final String URL_SUCCESS = "/Index";;
+     public static final String URL_SUCCESS = "/Index";
      public static final String URL_UNAUTHORIZED = "/sec/AccessDenied";
 
 	/**
@@ -134,11 +133,7 @@ public class AppModule {
 		    pConfiguration.add("application/json");
 	 }
 	
-	 public static void contributeJavaScriptStackSource(MappedConfiguration<String, JavaScriptStack> configuration)
-	 {
-	        configuration.addInstance(AngularJavaScriptStack.STACK_ID, AngularJavaScriptStack.class);
-	 }
-	
+
 	 public static void contributeComponentClassResolver(Configuration<LibraryMapping> configuration)
 	 {
 	        configuration.add(new LibraryMapping("angular", "dev.openshift.tapestry.angular"));

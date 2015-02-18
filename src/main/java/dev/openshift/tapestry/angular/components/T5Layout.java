@@ -1,6 +1,5 @@
 package dev.openshift.tapestry.angular.components;
 
-import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MarkupWriter;
@@ -22,9 +21,7 @@ public class T5Layout
 	@Inject
 	private Request request;
 	
-	@Inject
-	private JavaScriptSupport support;
-
+	
     @SuppressWarnings("unused")
     @Property
     @Parameter(required = true, defaultPrefix = BindingConstants.LITERAL)
@@ -34,4 +31,4 @@ public class T5Layout
     private ComponentResources resources;
     
    
-   }
+  }

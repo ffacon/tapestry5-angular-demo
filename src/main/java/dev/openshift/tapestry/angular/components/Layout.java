@@ -27,10 +27,9 @@ import org.apache.tapestry5.annotations.SetupRender;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
-import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 
 
-@Import(stack = AngularJavaScriptStack.STACK_ID)
+
 public class Layout
 {
 	@SuppressWarnings("unused")

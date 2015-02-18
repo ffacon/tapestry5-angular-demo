@@ -1,5 +1,5 @@
 //
-// Copyright 2010 GOT5 (GO Tapestry 5)
+// Copyright 2015 GOT5 (GO Tapestry 5)
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,44 @@
 //
 package dev.openshift.tapestry.angular.components;
 
-import org.apache.tapestry5.annotations.Import;
+import org.apache.tapestry5.BindingConstants;
+import org.apache.tapestry5.ComponentResources;
+import org.apache.tapestry5.MarkupWriter;
+import org.apache.tapestry5.annotations.Parameter;
+import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.annotations.SetupRender;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-import dev.openshift.tapestry.angular.services.javascript.AngularJavaScriptStack;
 
-@Import(stack = AngularJavaScriptStack.STACK_ID)
-public class LayoutFinal extends Layout
+public class LayoutFinal 
 {
+	@SuppressWarnings("unused")
+	@Property
+    private String pageName;
 	
+	@Inject
+	private Request request;
+	
+	@Inject
+	private JavaScriptSupport support;
 
+    @SuppressWarnings("unused")
+    @Property
+    @Parameter(required = true, defaultPrefix = BindingConstants.LITERAL)
+    private String pageTitle;
+
+    @Inject
+    private ComponentResources resources;
+    
+   
+    @SetupRender
+    void init(final MarkupWriter writer)
+    {
+    	writer.getDocument().raw("<!DOCTYPE html>");
+        this.pageName = resources.getPageName();
+    }
+
+	
 }
