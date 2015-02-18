@@ -1,5 +1,5 @@
 //
-// Copyright 2014
+// Copyright 2014-2015 
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,10 +21,12 @@ import java.io.InputStream;
 
 import dev.openshift.tapestry.angular.data.PhoneDetails;
 import dev.openshift.tapestry.angular.services.PhoneCatalog;
+
 import org.apache.tapestry5.Asset;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.MarkupWriter;
 import org.apache.tapestry5.StreamResponse;
+import org.apache.tapestry5.annotations.AfterRender;
 import org.apache.tapestry5.annotations.Events;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -37,23 +39,18 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.AssetSource;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-@Import(stylesheet={"context:/css/phonecat/app.css","context:/css/phonecat/bootstrap.css"},
-		library={
-                "context:js/bower_components/angular-cookies/angular-cookies.js",
-                "context:js/bower_components/angular-translate/angular-translate.js",
-                "context:js/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js",
-                "context:js/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
-                "context:js/index.js",
-                "context:js/services/auth-utils.js",
-                "context:js/services/CommentService.js",
-                "context:js/controllers/controllers-index.js"})
+@Import(stylesheet={"context:/css/phonecat/app.css"})
 @Events({ "phones","phoneDetails"})
 public class Index
 {
 
     @Inject
     PhoneCatalog catalog;
+
+    @Inject
+    private JavaScriptSupport javaScriptSupport;
 
     @OnEvent(value="phones")
     JSONArray onReturnStreamResponse() {
@@ -66,4 +63,5 @@ public class Index
         PhoneDetails details= catalog.getPhonesDetails(name);
         return details.getJSONObject();
     }
+
 }

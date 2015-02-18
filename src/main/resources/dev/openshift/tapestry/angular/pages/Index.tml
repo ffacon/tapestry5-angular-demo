@@ -4,5 +4,19 @@
       xmlns:a="tapestry-library:angular">
 
       <div ui-view="" ></div>
-    
+
+      <!-- load without requireJS -->
+      <script src="${asset:context:js/bower_components/angular/angular.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-ui-router/release/angular-ui-router.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-resource/angular-resource.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-cookies/angular-cookies.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-translate/angular-translate.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js}"></script>
+      <script src="${asset:context:js/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js}"></script>
+      <script src="${asset:context:js/index.js}"></script>
+      <script src="${asset:context:js/services/auth-utils.js}"></script>
+      <script src="${asset:context:js/services/CommentService.js}"></script>
+      <script src="${asset:context:js/controllers/controllers-index.js}"></script>
+
 </html>
