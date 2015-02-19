@@ -1,21 +1,28 @@
-'use strict';
 
 var httpHeaders;
 var baseUrl;
+var phonecat;
 
-var phonecat = angular.module('phonecat', ['ngResource','ui.router','pascalprecht.translate','ngCookies']).
-  config(['$stateProvider','$urlRouterProvider','$httpProvider','USER_ROLES','$translateProvider', function($stateProvider,$urlRouterProvider,$httpProvider,USER_ROLES,$translateProvider) {
-  $stateProvider.
-      state('phones',
-            {
-                url: '/phones',
-                templateUrl:function()
+(function () {
+    'use strict';
+    define(['angular','angular-ui-router','angular-resource','angular-cookies','angularTranslate','angular-translate-storage-cookie','angularTranslateLoader'],
+
+       
+  function (angular) {
+      phonecat=  angular.module('phonecat', ['ngResource','ui.router','pascalprecht.translate','ngCookies'])
+      .constant('USER_ROLES', { all: '*',admin: 'ADMIN',user: 'USER'})
+      .config(['$stateProvider','$urlRouterProvider','$httpProvider','USER_ROLES','$translateProvider', function($stateProvider,$urlRouterProvider,$httpProvider,USER_ROLES,$translateProvider) {
+           	
+      $stateProvider.state('phones',
+      {
+           url: '/phones',
+           templateUrl:function()
                     {return baseUrl + 'partials/phones.html';},
                 controller: 'PhoneListCtrl',
-                access: {
+           access: {
                     authorizedRoles: [USER_ROLES.all]
-                }
-            }).
+           }
+      }).
       state('login',
       {
           url: '/login',
@@ -69,7 +76,7 @@ var phonecat = angular.module('phonecat', ['ngResource','ui.router','pascalprech
 
       $translateProvider.useCookieStorage();
     }])
-.config(['$httpProvider', function($httpProvider)
+    .config(['$httpProvider', function($httpProvider)
     {
     //add header to allow tapestry to serve data
     //see https://github.com/angular/angular.js/issues/1004
@@ -103,7 +110,7 @@ var phonecat = angular.module('phonecat', ['ngResource','ui.router','pascalprech
     }});
 
     }])
-.run(['$rootScope', '$location', '$http','$state', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
+    	.run(['$rootScope', '$location', '$http','$state', 'AuthenticationSharedService',  'Session', 'USER_ROLES',
         function($rootScope, $location, $http,$state, AuthenticationSharedService, Session, USER_ROLES) {
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
@@ -120,5 +127,6 @@ var phonecat = angular.module('phonecat', ['ngResource','ui.router','pascalprech
                 $state.go('login');
             });
 
-        }]);;
-
+        }]);
+      return phonecat;  
+    })})();
