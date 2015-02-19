@@ -39,6 +39,7 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.AssetSource;
 import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.Response;
+import org.apache.tapestry5.services.javascript.InitializationPriority;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 @Import(stylesheet={"context:/css/phonecat/app.css"})
@@ -62,6 +63,13 @@ public class Index
     JSONObject onReturnPhoneDetails(String name) {
         PhoneDetails details= catalog.getPhonesDetails(name);
         return details.getJSONObject();
+    }
+    
+    @AfterRender
+    public void finish(MarkupWriter w){
+
+        javaScriptSupport.require("angularApp/bootstrapApp").priority(InitializationPriority.EARLY);
+
     }
 
 }
