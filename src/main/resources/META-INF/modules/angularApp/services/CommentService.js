@@ -1,4 +1,6 @@
-
+(function () {
+    'use strict';
+    define(['index'], function() {
     angular.module('phonecat')
         .factory('CommentService',['$resource', function ($resource) {
             return $resource(baseUrl + 'api/json/phone/comments/:op/:id',{id:'@id'},{
@@ -7,3 +9,5 @@
                 delete: {method:'DELETE',params: {id:'@id'}}
             });
         }]);
+    });
+ }());   

@@ -1,6 +1,6 @@
+(function () {
 'use strict';
-/* Services */
-
+define(['index'], function() {
 phonecat.factory('Register', ['$resource',
     function ($resource) {
         return $resource(baseUrl +'api/app/account/register', {}, {
@@ -256,3 +256,6 @@ phonecat.factory('AuthenticationSharedService', ['$rootScope', '$http',  'Sessio
             }
         };
     }]);
+
+	});
+}());   

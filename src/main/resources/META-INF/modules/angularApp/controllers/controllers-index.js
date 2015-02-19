@@ -1,5 +1,6 @@
+(function () {
 'use strict';
-
+define(['index'], function() {
 /* Controllers */
 angular.module('phonecat')
     .controller('PhoneListCtrl', ['$location','$scope', '$http', '$log', 'Session','AuthenticationSharedService',
@@ -66,7 +67,7 @@ angular.module('phonecat')
 
         $scope.requestLogin = function(){
             $rootScope.$emit('event:auth-loginRequired');
-        }
+        };
     }]);
 
 phonecat.controller('LoginCtrl', [ '$rootScope','$scope', '$location','AuthenticationSharedService',
@@ -85,7 +86,7 @@ phonecat.controller('LoginCtrl', [ '$rootScope','$scope', '$location','Authentic
                 $scope.authenticationError = true;
                 $rootScope.authenticated = false;
             });
-        }
+        };
     }]);
 
 phonecat.controller('LogoutController', ['$location', 'AuthenticationSharedService',
@@ -121,6 +122,9 @@ phonecat.controller('RegisterController', ['$scope', 'Register',
                             $scope.errorUserExists = null;
                         }
                     });
-            }
-        }
+            };
+        };
     }]);
+	
+	});
+}());   
