@@ -4,11 +4,11 @@
 	<groupId>dev.openshift.tapestry</groupId>
 	<artifactId>tapestry5-angular-openshift</artifactId>
 	<packaging>war</packaging>
-	<version>1.4.1.0</version>
+	<version>1.4.1.1</version>
 	<name>tapestry5 angular demo in Tapestry 5</name>
 	
 	<properties>
-		<tapestry-release-version>5.4-beta-26</tapestry-release-version>
+		<tapestry-release-version>5.4-rc-1</tapestry-release-version>
 		<hibernate-framework-version>3.6.10.Final</hibernate-framework-version>
 		<slf4j-version>1.7.2</slf4j-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
@@ -261,41 +261,6 @@
                <enabled>false</enabled>
            </snapshots>
        </repository>
-
-		<repository>
-			<id>devlab722-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>devlab722-snapshot-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>pullrequest-snapshot-repo</id>
-			<url>http://nexus.pullrequest.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		
-
 
 	</repositories>
    
