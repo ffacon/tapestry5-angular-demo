@@ -11,7 +11,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
-@Import(stylesheet={"context:/css/phonecat/app.css","context:/css/phonecat/bootstrap.css"})
+@Import(stylesheet={"context:/css/phonecat/app.css"})
 public class T5Layout
 {
 	@SuppressWarnings("unused")
