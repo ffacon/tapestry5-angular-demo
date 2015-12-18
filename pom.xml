@@ -4,11 +4,11 @@
 	<groupId>dev.openshift.tapestry</groupId>
 	<artifactId>tapestry5-angular-openshift</artifactId>
 	<packaging>war</packaging>
-	<version>1.4.0.0</version>
+	<version>1.4.0.1</version>
 	<name>tapestry5 angular demo in Tapestry 5</name>
 	
 	<properties>
-		<tapestry-release-version>5.4-beta-26</tapestry-release-version>
+		<tapestry-release-version>5.4.0</tapestry-release-version>
 		<hibernate-framework-version>3.6.10.Final</hibernate-framework-version>
 		<slf4j-version>1.7.2</slf4j-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
@@ -227,6 +227,11 @@
        <repository>
            <id>apache-snapshots</id>
            <url>http://repository.apache.org/snapshots</url>
+       </repository>
+
+       <repository>
+           <id>apache-staging</id>
+           <url>https://repository.apache.org/content/repositories/staging</url>
        </repository>
 
        <repository>
