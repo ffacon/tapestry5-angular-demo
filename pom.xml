@@ -254,7 +254,6 @@
            <url>https://nexus.codehaus.org/content/repositories/releases/</url>
        </repository>
 
-
        <repository>
            <id>MavenCentral</id>
            <name>Maven repository</name>
@@ -266,42 +265,6 @@
                <enabled>false</enabled>
            </snapshots>
        </repository>
-
-		<repository>
-			<id>devlab722-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>devlab722-snapshot-repo</id>
-			<url>http://nexus.devlab722.net/nexus/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>pullrequest-snapshot-repo</id>
-			<url>http://nexus.pullrequest.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		
-
-
 	</repositories>
    
 </project>
