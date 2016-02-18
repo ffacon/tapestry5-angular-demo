@@ -18,6 +18,7 @@ or use mvn jetty:run and hit  [http://localhost:8080/#/phones](http://localhost:
 see also official AngularJS tutorial  [https://docs.angularjs.org/tutorial/step_00](https://docs.angularjs.org/tutorial/step_00)
 
 # Changelog 
+* 1.4.0.1 : clean up the repository list
 * 1.4.0.0 : [Update to Tapestry 5.4 #3](https://github.com/ffacon/tapestry5-angular-demo/issues/3)
 * 1.0.0 : [Use angular-ui-router instead of angular-route #2](https://github.com/ffacon/tapestry5-angular-demo/issues/2)
 * 0.4 : update to Tapestry 5.3.8 (Java 1.8) and AngularJS 1.3.9
